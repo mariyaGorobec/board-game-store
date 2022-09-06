@@ -8,6 +8,9 @@ body {
   background: linear-gradient(to bottom right, #f47c77, #f8c145);
   height: 100vh;
 }
+*{
+  color: #203040;
+}
 
 .wrapper {
   background: #ffffff;
@@ -66,9 +69,29 @@ header {
 .content {
   padding: 40px;
 
+  .titleAndSearch{
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .searchBlock{
+      display: flex;
+      align-items: center;
+      border: 1px solid #f3f3f3;
+      border-radius: 10px;
+      padding: 0 15px;
+      input{
+        margin-left: 3px;
+        border: 0;
+        padding: 10px;
+        font-size: 14px;
+        outline-color: #f47c77;
+        width: 200px;
+      }
+    }
+  }
   h1 {
     margin: 0;
-    margin-bottom: 40px;
   }
 }
 
@@ -77,6 +100,11 @@ header {
 }
 
 .card {
+  &:hover{
+    box-shadow: 0px 14px 30px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
+  }
+  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
   margin-right: 30px;
   border: 1px solid #f3f3f3;
   border-radius: 30px;
@@ -92,6 +120,10 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+  .favorite{
+    align-self: flex-start;
+    cursor: pointer;
+  }
     
 
     span {
@@ -140,4 +172,78 @@ header {
       margin-left: 10px;
     }
   }
+}
+.overlay{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height:100% ;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1;
+}
+.drawer{
+  display: flex;
+  flex-direction: column;
+  .items{
+    ul,li{
+      padding: 0;
+    }
+    li{
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 20px;
+      div{
+        flex: 1;
+        height: 1px;
+        border-bottom: 1px dashed #dfdfdf;
+        position: relative;
+        top: -4px;
+        margin: 0 7px;
+      }
+
+    }
+  }
+  position: absolute;
+  width: 420px;
+  height: 100%;
+  right: 0;
+  background: #ffffff;
+  padding: 30px;
+  h2{
+    margin: 0;
+    margin-bottom: 20px;
+  }
+  .cartItem{
+    border: 1px solid #f3f3f3;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    p,b{
+      margin-right: 20px;
+    }
+    display: flex;
+    align-items: center;
+    img{
+      margin-right: 2px;
+      padding: 10px;
+    }
+    b{
+      font-size: 14px;
+    }
+    p{
+      margin-bottom: 5px;
+      font-size: 12px;
+    }
+    svg{
+      opacity: 0.5;
+      cursor: pointer;
+      transition: opacity 0.2s ease-in-out;
+      &:hover{
+        opacity: 1;
+      }
+    }
+  }
+  
+  box-shadow: -10px 4px 24px rgba(0,0,0,0.1);
 }
