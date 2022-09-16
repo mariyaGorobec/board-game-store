@@ -1,4 +1,8 @@
-function Card() {
+function Card(props) {
+  function divideNumberIntoСategory(num) {
+    let n = num.toString();
+    return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + ' ');
+}
   return (
     <div className="card">
       <div className="cardTop">
@@ -26,20 +30,19 @@ function Card() {
             />
           </svg>
         </div>
-
         <img
           width={133}
           height={112}
-          src="/img/games/NaydiPechenki.jpg"
-          alt=""
+          src={props.imgURL}
+          alt= {"Изображение игры " + props.title}
         ></img>
-        <h5>Найди печеньки!</h5>
-        <span>Кто из вас главный сладкоежка?</span>
+        <h5>{props.title}</h5>
+        <span>{props.description}</span>
       </div>
       <div className="cardBottom">
         <div className="price">
           <span> Цена:</span>
-          <b>1490 руб.</b>
+          <b>{divideNumberIntoСategory(props.price)} руб.</b>
         </div>
         <button>
           <svg
