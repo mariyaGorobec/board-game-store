@@ -1,7 +1,9 @@
+import styles from './Drawer.module.scss'
+
 function Drawer(){
     return (
-        <div style={{display: 'none'}} className="overlay">
-        <div className="drawer">
+        <div style={{display: 'none'}} className={styles.overlay}>
+        <div className={styles.drawer}>
           <h2>
             Корзина
             <svg
@@ -27,8 +29,8 @@ function Drawer(){
             </svg>
           </h2>
 
-          <div className="items">
-            <div className="cartItem">
+          <div className={styles.items}>
+            <div className={styles.cartItem}>
               <img
                 width={70}
                 height={70}
@@ -62,7 +64,7 @@ function Drawer(){
               </svg>
             </div>
           </div>
-          <div className="cartTotalBlock">
+          <div className={styles.cartTotalBlock}>
             <ul>
               <li>
                 <span>Итого: </span>
@@ -75,7 +77,7 @@ function Drawer(){
                 <b>74.5</b>
               </li>
             </ul>
-            <button className="orangeButton">
+            <button className={styles.orangeButton}>
               Оформить заказ <img src="/img/arrow.svg" alt="arrow"></img>
             </button>
           </div>

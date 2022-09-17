@@ -1,12 +1,15 @@
-function Card(props) {
-  function divideNumberIntoСategory(num) {
-    let n = num.toString();
-    return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + ' ');
+import styles from './Card.module.scss'
+
+function divideNumberIntoСategory(num) {
+  let n = num.toString();
+  return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + ' ');
 }
+
+function Card(props) {
   return (
-    <div className="card">
-      <div className="cardTop">
-        <div className="favorite">
+    <div className={styles.card}>
+      <div className={styles.cardTop}>
+        <div className={styles.favorite}>
           <svg
             width="32"
             height="32"
@@ -39,12 +42,12 @@ function Card(props) {
         <h5>{props.title}</h5>
         <span>{props.description}</span>
       </div>
-      <div className="cardBottom">
-        <div className="price">
+      <div className={styles.cardBottom}>
+        <div className={styles.price}>
           <span> Цена:</span>
           <b>{divideNumberIntoСategory(props.price)} руб.</b>
         </div>
-        <button>
+        <button onClick={()=>alert("Нажали на плюс")}>
           <svg
             width="15"
             height="15"

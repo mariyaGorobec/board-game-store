@@ -1,14 +1,16 @@
+import styles from './Header.module.scss'
+
 function Header(){
     return(
         <header>
-        <div className="headerLeft">
+        <div className={styles.headerLeft}>
           <img width={60} height={60} src="/img/icLog.png" alt="logo"></img>
-          <div className="headerInfo">
+          <div className={styles.headerInfo}>
             <h3>Поиграй-ка</h3>
             <p>Развлеки себя и своих друзей</p>
           </div>
         </div>
-        <div className="headerRight">
+        <div className={styles.headerRight}>
           <ul>
             <li>
               <svg
