@@ -32,6 +32,7 @@ function App() {
         <div className="titleAndSearch">
           <h1>Все настолки</h1>
           <div className="searchBlock">
+            
             <svg
               width="16"
               height="16"
@@ -50,7 +51,8 @@ function App() {
           </div>
         </div>
         <div className="cards">
-          {arr.map((obg) => (
+          
+         {arr.map((obg) => (
             <Card
               title={obg.title}
               imgURL={obg.imgURL}
@@ -58,7 +60,7 @@ function App() {
               price={obg.price}
             >
             </Card>
-          ))}
+         ))}
         </div>
       </div>
     </div>

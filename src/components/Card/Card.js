@@ -12,6 +12,7 @@ function Card(props) {
   const onClickAdd = () =>{
     setIsAdded(!isAdded);
   } 
+  console.log(isAdded);
   return (
     <div className={styles.card}>
       <div className={styles.cardTop}>
