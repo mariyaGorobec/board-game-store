@@ -36,6 +36,9 @@ header {
       li {
         margin-right: 30px;
         list-style-type: none;
+        svg{
+          cursor: pointer;
+        }
   
         span {
           margin-left: 10px;

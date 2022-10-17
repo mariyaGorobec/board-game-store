@@ -9,10 +9,6 @@ function divideNumberIntoСategory(num) {
 
 function Card(props) {
   const [isAdded, setIsAdded] = React.useState(false);
-  const onClickAdd = () =>{
-    setIsAdded(!isAdded);
-  } 
-  console.log(isAdded);
   return (
     <div className={styles.card}>
       <div className={styles.cardTop}>
@@ -57,7 +53,9 @@ function Card(props) {
         <img
         alt = "Кнопка добавить или кнопка добавленно"
         className={styles.plus}
-        onClick={onClickAdd}
+        onClick={()=>{
+          setIsAdded(!isAdded);
+        }}
          width="15"
          height="15"
          src={isAdded ? "/img/btn-checked.svg":"/img/plus.svg"}>

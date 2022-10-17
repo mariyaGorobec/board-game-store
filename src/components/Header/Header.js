@@ -1,6 +1,6 @@
 import styles from './Header.module.scss'
 
-function Header(){
+function Header(props){
     return(
         <header>
         <div className={styles.headerLeft}>
@@ -14,6 +14,7 @@ function Header(){
           <ul>
             <li>
               <svg
+              onClick={props.onClickCart}
                 width="25"
                 height="25"
                 viewBox="0 0 20 20"

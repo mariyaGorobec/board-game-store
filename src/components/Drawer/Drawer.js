@@ -1,12 +1,13 @@
 import styles from './Drawer.module.scss'
 
-function Drawer(){
+function Drawer(props){
     return (
-        <div style={{display: 'none'}} className={styles.overlay}>
+        <div className={styles.overlay}>
         <div className={styles.drawer}>
           <h2>
             Корзина
             <svg
+              onClick={props.onClose}
               width="32"
               height="32"
               viewBox="0 0 32 32"
