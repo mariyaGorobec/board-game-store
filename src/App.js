@@ -3,42 +3,37 @@ import Drawer from "./components/Drawer/Drawer";
 import Header from "./components/Header/Header";
 import React from "react";
 
-const arr = [
-  {
-    title: "Найди печеньки!",
-    imgURL: "/img/games/NaydiPechenki.jpg",
-    description: "Кто из вас главный сладкоежка?",
-    price: 1490,
-  },
-  {
-    title: "Мачи Коро",
-    imgURL: "/img/games/MachoСoro.jpg",
-    description: "Станьте лучшим градостроителем Японии",
-    price: 1290,
-  },
-  {
-    title: "Взрывные котята",
-    imgURL: "/img/games/VzryvnieKotyata.jpg",
-    description: "Милые пушистики смертельно опасны",
-    price: 990,
-  },
-];
-
 function App() {
-  const [cartOpened, setCartOpened]=React.useState(false);
+  const [items, setItems] = React.useState([]);
+  const [cartOpened, setCartOpened] = React.useState(false);
+  const [cartItems, setCartItems] = React.useState([]);
+  React.useEffect(()=>{
+    fetch('https://634e5d25f34e1ed826899d31.mockapi.io/items')
+    . then((resp)=>{
+      return resp.json();
+    })
+    .then((json)=> {
+      setItems(json);
+    });
+  },[])
   return (
     <div className="wrapper">
-      {cartOpened ? <Drawer onClose = {()=>{
-        setCartOpened(false);
-      }}/> : undefined}
-      <Header onClickCart = {()=>{
-        setCartOpened(true);
-      }}></Header>
+      {cartOpened ? (
+        <Drawer
+          onClose={() => {
+            setCartOpened(false);
+          }}
+        />
+      ) : undefined}
+      <Header
+        onClickCart={() => {
+          setCartOpened(true);
+        }}
+      ></Header>
       <div className="content">
         <div className="titleAndSearch">
           <h1>Все настолки</h1>
           <div className="searchBlock">
-            
             <svg
               width="16"
               height="16"
@@ -57,16 +52,14 @@ function App() {
           </div>
         </div>
         <div className="cards">
-          
-         {arr.map((obg) => (
+          {items.map((obg) => (
             <Card
               title={obg.title}
               imgURL={obg.imgURL}
               description={obg.description}
               price={obg.price}
-            >
-            </Card>
-         ))}
+            ></Card>
+          ))}
         </div>
       </div>
     </div>

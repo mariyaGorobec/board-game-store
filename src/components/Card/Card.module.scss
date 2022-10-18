@@ -9,6 +9,7 @@
     border-radius: 30px;
     padding: 20px;
     width: 250px;
+    margin-bottom: 30px;
   
     h5 {
       font-weight: 500;
@@ -24,7 +25,14 @@
       cursor: pointer;
     }
       
-  
+      h5{
+        text-align: center;
+        width: 230px;
+        white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+     
+      }
       span {
         width: 230px;
         opacity: 0.5;

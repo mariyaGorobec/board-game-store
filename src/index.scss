@@ -5,8 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(to bottom right, #f47c77, #f8c145);
-  height: 100vh;
+  background: linear-gradient(to bottom right, #f47c77, #f8c145) no-repeat;
+  height: 100%;
 }
 *{
   color: #203040;
@@ -53,6 +53,7 @@ body {
 
 .cards{
   display: flex;
+  flex-wrap: wrap;
 }
 
 
