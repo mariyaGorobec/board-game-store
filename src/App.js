@@ -15,11 +15,15 @@ function App() {
     .then((json)=> {
       setItems(json);
     });
-  },[])
+  },[]);
+  const addToCart = (item) =>{
+    setCartItems(prev=>[...prev, item]);
+  }
   return (
     <div className="wrapper">
       {cartOpened ? (
         <Drawer
+          items={cartItems}
           onClose={() => {
             setCartOpened(false);
           }}
@@ -52,12 +56,15 @@ function App() {
           </div>
         </div>
         <div className="cards">
-          {items.map((obg) => (
+          {items.map((item) => (
             <Card
-              title={obg.title}
-              imgURL={obg.imgURL}
-              description={obg.description}
-              price={obg.price}
+              title={item.title}
+              imgURL={item.imgURL}
+              description={item.description}
+              price={item.price}
+              onPlus={(item)=>{
+                addToCart(item);
+              }}
             ></Card>
           ))}
         </div>

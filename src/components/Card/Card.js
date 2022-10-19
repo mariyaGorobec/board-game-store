@@ -7,12 +7,12 @@ function divideNumberIntoСategory(num) {
   return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + ' ');
 }
 
-function Card(props) {
+function Card({onFavorite, imgURL, title, price, description, onPlus}) {
   const [isAdded, setIsAdded] = React.useState(false);
   return (
     <div className={styles.card}>
       <div className={styles.cardTop}>
-        <div className={styles.favorite} onClick={props.onFavorite}>
+        <div className={styles.favorite} onClick={onFavorite}>
           <svg
             width="32"
             height="32"
@@ -39,22 +39,23 @@ function Card(props) {
         <img
           width={133}
           height={112}
-          src={props.imgURL}
-          alt= {"Изображение игры " + props.title}
+          src={imgURL}
+          alt= {"Изображение игры " + title}
         ></img>
-        <h5>{props.title}</h5>
-        <span>{props.description}</span>
+        <h5>{title}</h5>
+        <span>{description}</span>
       </div>
       <div className={styles.cardBottom}>
         <div className={styles.price}>
           <span> Цена:</span>
-          <b>{divideNumberIntoСategory(props.price)} руб.</b>
+          <b>{divideNumberIntoСategory(price)} руб.</b>
         </div>
         <img
         alt = "Кнопка добавить или кнопка добавленно"
         className={styles.plus}
         onClick={()=>{
           setIsAdded(!isAdded);
+          onPlus({title,imgURL,price});
         }}
          width="15"
          height="15"
