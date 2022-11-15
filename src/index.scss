@@ -6,7 +6,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(to bottom right, #f47c77, #f8c145) no-repeat;
-  height: 100%;
+  background-size: 100%;
+  background-attachment: fixed;
 }
 *{
   color: #203040;
@@ -26,16 +27,41 @@ body {
   padding: 40px;
 
   .titleAndSearch{
+    .headline{
+      display: flex;
+      align-items: center;
+      span{
+        color: #f47c77;
+        margin-left: 5px;
+        font-weight: 700;
+        font-size: 33px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 414px;
+      }
+      
+    }
     margin-bottom: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     .searchBlock{
+      position: relative;
+      .clear{
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        right: 2px;
+        width: 20px;
+        top: 10px;
+        height: 20px;
+      }
       display: flex;
       align-items: center;
       border: 1px solid #f3f3f3;
       border-radius: 10px;
-      padding: 0 15px;
+      padding: 0 25px;
       input{
         margin-left: 3px;
         border: 0;
