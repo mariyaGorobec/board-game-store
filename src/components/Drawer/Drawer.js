@@ -29,8 +29,7 @@ function Drawer({onClose,onRemove, items = []}){
               />
             </svg>
           </h2>
-
-          <div className={styles.items}>
+          {items.length > 0 ? <div><div className={styles.items}>
             {items.map((obg)=>
             <div className={styles.cartItem}>
             <img
@@ -81,9 +80,17 @@ function Drawer({onClose,onRemove, items = []}){
               </li>
             </ul>
             <button className={styles.orangeButton}>
-              Оформить заказ <img src="/img/arrow.svg" alt="arrow"></img>
+              Оформить заказ <img className = {styles.arrow} src="/img/arrow.svg" alt="arrow"></img>
             </button>
-          </div>
+          </div></div> : <div className={styles.emptyCart}>
+            <img width = {150} height = {150} src='/img/empty-cart.jpg'></img>
+            <h3>Корзине грустно, когда в ней пусто :С</h3>
+            <p>Пожалуйста, добавьте хотя бы один товар в корзину, чтобы сделать заказ.</p>
+            <button className={styles.orangeButton}>
+            <img className = {styles.arrow} src="/img/arrow.svg" alt="arrow"></img>Вернуться назад
+            </button>
+            </div>}
+          
         </div>
       </div>
     );
