@@ -1,6 +1,6 @@
 import styles from './Drawer.module.scss'
 
-function Drawer({onClose,onRemove, items = []}){
+function Drawer({onClose, onRemove, items = []}){
     return (
         <div className={styles.overlay}>
         <div className={styles.drawer}>
@@ -29,21 +29,21 @@ function Drawer({onClose,onRemove, items = []}){
               />
             </svg>
           </h2>
-          {items.length > 0 ? <div><div className={styles.items}>
-            {items.map((obg)=>
+          {items.length > 0 ? <div> <div className={styles.items}>
+            {items.map((obj)=>
             <div className={styles.cartItem}>
             <img
               width={70}
               height={70}
-              src={obg.imgURL}
-              alt={obg.title}
+              src={obj.imgURL}
+              alt={obj.title}
             ></img>
             <div>
-              <p>{obg.title}</p>
-              <b>{obg.price}</b>
+              <p>{obj.title}</p>
+              <b>{obj.price}</b>
             </div>
             <svg
-              onClick={()=>onRemove(obg.id)}
+              onClick={()=>onRemove(obj.id)}
               width="32"
               height="32"
               viewBox="0 0 32 32"
@@ -82,15 +82,15 @@ function Drawer({onClose,onRemove, items = []}){
             <button className={styles.orangeButton}>
               Оформить заказ <img className = {styles.arrow} src="/img/arrow.svg" alt="arrow"></img>
             </button>
-          </div></div> : <div className={styles.emptyCart}>
+          </div> </div> : <div className={styles.emptyCart}>
+            {console.log(items)}
             <img width = {150} height = {150} src='/img/empty-cart.jpg'></img>
             <h3>Корзине грустно, когда в ней пусто :С</h3>
             <p>Пожалуйста, добавьте хотя бы один товар в корзину, чтобы сделать заказ.</p>
-            <button className={styles.orangeButton}>
+            <button onClick={onClose} className={styles.orangeButton}>
             <img className = {styles.arrow} src="/img/arrow.svg" alt="arrow"></img>Вернуться назад
             </button>
-            </div>}
-          
+            </div>}          
         </div>
       </div>
     );

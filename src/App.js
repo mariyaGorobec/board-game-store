@@ -11,17 +11,17 @@ function App() {
   const [searchValue, setSearchValue] = React.useState('');
   React.useEffect(()=>{
     axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/items').then(res => setItems(res.data));
-    axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/cart').then(res => setCartItems(res.data))
+    axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/cart').then(res => setCartItems(res.data));
   },[]);
   const addToCart = (item) =>{
-    axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', item);
-    setCartItems(prev=>[...prev, item]);
-    
+    axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', item).then(res=>setCartItems(prev=>[...prev, res.data]));
   }
+
   const onRemoveItem = (id) => {
-    //axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${id}`);
-    setCartItems((prev) => prev.filter(item => item.id!==id));
+    axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${id}`);
+    setCartItems((prev)=> prev.filter(item => item.id !== id));
   }
+  
   const onChangeSearchInput = (event) => {
     setSearchValue(event.target.value);
   }
@@ -90,9 +90,10 @@ function App() {
           </div>
         </div>
         <div className="cards">
-          {items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item) => (
+          {items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
             <Card
               key = {item.title}
+              id = {item.id}
               title={item.title}
               imgURL={item.imgURL}
               description={item.description}
