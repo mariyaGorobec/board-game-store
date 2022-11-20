@@ -1,6 +1,6 @@
 import styles from './Drawer.module.scss'
 
-function Drawer({onClose, items = []}){
+function Drawer({onClose,onRemove, items = []}){
     return (
         <div className={styles.overlay}>
         <div className={styles.drawer}>
@@ -44,6 +44,7 @@ function Drawer({onClose, items = []}){
               <b>{obg.price}</b>
             </div>
             <svg
+              onClick={()=>onRemove(obg.id)}
               width="32"
               height="32"
               viewBox="0 0 32 32"
