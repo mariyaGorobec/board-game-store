@@ -6,16 +6,16 @@ function divideNumberIntoСategory(num) {
   return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + " ");
 }
 
-function Card({ onFavorite, imgURL, title, price, description, onPlus }) {
+function Card({id, onFavorite, imgURL, title, price, description, onPlus, favorited = false}) {
   const [isAdded, setIsAdded] = React.useState(false);
-  const [isFavorite, setIsFavorite] = React.useState(false);
+  const [isFavorite, setIsFavorite] = React.useState(favorited);
 
   return (
     <div className={styles.card}>
       <div className={styles.cardTop}>
         <div className={styles.favorite} onClick={() => {
             setIsFavorite(!isFavorite);
-            onFavorite({ title, imgURL, price });
+            onFavorite({ title, imgURL, price, id });
           }}>
            {isFavorite ? (
              <svg
@@ -47,7 +47,7 @@ function Card({ onFavorite, imgURL, title, price, description, onPlus }) {
            </svg>
            
           ) : (
-            <img width = {23} height = {23} src="/img/heart.svg"></img>)
+            <img width = {28} height = {28} alt = "unliked" src="/img/unliked.svg"></img>)
           }
         </div>
         <img

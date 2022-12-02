@@ -4,6 +4,9 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #eaeaea;
+    a {
+      text-decoration: none; 
+     }
   
     .headerLeft {
       display: flex;
