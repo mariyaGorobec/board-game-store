@@ -83,7 +83,7 @@ function Drawer({onClose, onRemove, items = []}){
               Оформить заказ <img className = {styles.arrow} src="/img/arrow.svg" alt="arrow"></img>
             </button>
           </div> </div> : <div className={styles.emptyCart}>
-            {console.log(items)}
+           
             <img width = {150} height = {150} src='/img/empty-cart.jpg'></img>
             <h3>Корзине грустно, когда в ней пусто :С</h3>
             <p>Пожалуйста, добавьте хотя бы один товар в корзину, чтобы сделать заказ.</p>

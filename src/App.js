@@ -70,7 +70,7 @@ function App() {
         }}
       ></Header>
      <Routes>
-        <Route path="/" element={<Home
+        <Route  path="/" element={<Home
         items = {items}
         searchValue = {searchValue}
         setSearchValue = {setSearchValue}
@@ -79,7 +79,7 @@ function App() {
         addToCart = {addToCart}
         />}
         />
-        <Route path="/favorites" element={
+        <Route  path="/favorites" element={
           <Favorites
             items={favorites}
             onAddToFavorite={onAddToFavorite}

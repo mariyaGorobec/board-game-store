@@ -40,8 +40,8 @@ function Card({hash, id, onFavorite, imgURL, title, price, description, onPlus, 
                  y2="23"
                  gradientUnits="userSpaceOnUse"
                >
-                 <stop stop-color="#FFB0B0" />
-                 <stop offset="1" stop-color="#FF4343" />
+                 <stop stopColor="#FFB0B0" />
+                 <stop offset="1" stopColor="#FF4343" />
                </linearGradient>
              </defs>
            </svg>

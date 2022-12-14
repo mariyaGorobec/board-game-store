@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 function Header(props) {
   return (
     <header>
-      <Link to = '/' exact>
+      <Link to = "/">
       <div className={styles.headerLeft}>
         <img width={60} height={60} src="/img/icLog.png" alt="logo"></img>
         <div className={styles.headerInfo}>
@@ -49,7 +49,7 @@ function Header(props) {
             <span>100000 руб.</span>
           </li>
           <li>
-            <Link to="/favorites" exact>
+            <Link to="/favorites">
               <svg
                 width="25"
                 height="25"
