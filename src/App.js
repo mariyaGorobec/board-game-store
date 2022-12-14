@@ -17,27 +17,37 @@ function App() {
     axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/cart').then(res => setCartItems(res.data));
     axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/favorites').then(res => setFavorites(res.data));
   },[]);
-  const addToCart = (item) =>{
-    axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', item).then(res=>setCartItems(prev=>[...prev, res.data]));
+  const addToCart = (obj) =>{
+    try{
+      let data = cartItems.find(item => item.hash === obj.hash);
+      if (data!== undefined){
+        axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${data.id}`).then(setCartItems((prev)=> prev.filter(item => Number(item.hash) !== Number(obj.hash))));
+      }
+      else{
+        axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', obj).then(res=>setCartItems(prev=>[...prev, res.data]));
+      }
+    } catch (error){
+      alert('Не удалось добавить в корзину');
+    }
   }
 
   const onRemoveItem = (id) => {
     axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${id}`);
     setCartItems((prev)=> prev.filter(item => item.id !== id));
   }
-  
+
   const onAddToFavorite = (obj) => {
-   try { if (favorites.find((favObj) => favObj.id === obj.id)){
-    axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/favorites/${obj.id}`);
-    setFavorites((prev)=> prev.filter(item => item.id !== obj.id));
-  }
-    else {
-      axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/favorites', obj).then(res=>setFavorites(prev=>[...prev, res.data]));
+    try{
+      let data = favorites.find(item => item.hash === obj.hash);
+      if (data!== undefined){
+        axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/favorites/${data.id}`).then(setFavorites((prev)=> prev.filter(item => Number(item.hash) !== Number(obj.hash))));
+      }
+      else{
+        axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/favorites', obj).then(res=>setFavorites(prev=>[...prev, res.data]));
+      }
+    } catch (error){
+      alert('Не удалось добавить в избранное');
     }
-  }
-   catch(error){
-    alert("Не удалось добавить в избранное")
-  }
 }
 
   const onChangeSearchInput = (event) => {

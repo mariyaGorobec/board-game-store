@@ -1,4 +1,6 @@
 import Card from "../components/Card/Card";
+import crc32 from 'crc-32';
+
 function Favorites({items, onAddToFavorite}){
  return (
     <div className="content">
@@ -10,6 +12,7 @@ function Favorites({items, onAddToFavorite}){
             <Card
               key = {item.title}
               id = {item.id}
+              hash = {item.hash}
               title={item.title}
               imgURL={item.imgURL}
               description={item.description}
