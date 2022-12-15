@@ -6,8 +6,8 @@ function divideNumberIntoСategory(num) {
   return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + " ");
 }
 
-function Card({hash, id, onFavorite, imgURL, title, price, description, onPlus, favorited = false}) {
-  const [isAdded, setIsAdded] = React.useState(false);
+function Card({hash, onFavorite, imgURL, title, price, description, onPlus, favorited = false, added = false}) {
+  const [isAdded, setIsAdded] = React.useState(added);
   const [isFavorite, setIsFavorite] = React.useState(favorited);
 
   return (
@@ -15,7 +15,7 @@ function Card({hash, id, onFavorite, imgURL, title, price, description, onPlus, 
       <div className={styles.cardTop}>
         <div className={styles.favorite} onClick={() => {
             setIsFavorite(!isFavorite);
-            onFavorite({ title, imgURL, price, id, hash });
+            onFavorite({ title, imgURL, price, hash });
           }}>
            {isFavorite ? (
              <svg
@@ -69,7 +69,7 @@ function Card({hash, id, onFavorite, imgURL, title, price, description, onPlus, 
           className={styles.plus}
           onClick={() => {
             setIsAdded(!isAdded);
-            onPlus({ hash, id,title, imgURL, price });
+            onPlus({ hash,title, imgURL, price });
           }}
           width="15"
           height="15"

@@ -5,6 +5,7 @@ import axios  from "axios";
 import Favorites from "./pages/Favorites";
 import {Route, Routes} from 'react-router-dom';
 import React from "react";
+import crc32 from 'crc-32';
 
 function App() {
   const [items, setItems] = React.useState([]);
@@ -12,19 +13,35 @@ function App() {
   const [cartItems, setCartItems] = React.useState([]);
   const [favorites, setFavorites] =  React.useState([]);
   const [searchValue, setSearchValue] = React.useState('');
+ 
   React.useEffect(()=>{
-    axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/items').then(res => setItems(res.data));
+   /* axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/items').then(res => setItems(res.data));
     axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/cart').then(res => setCartItems(res.data));
     axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/favorites').then(res => setFavorites(res.data));
+  */
+    async function fetchData(){
+      const cartResponse = await axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/cart');
+      const favoriteResponse = await axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/favorites');
+      const itemsResponse = await axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/items');
+
+      setCartItems(cartResponse.data);
+      setFavorites(favoriteResponse.data);
+      setItems(itemsResponse.data);
+
+      
+    }
+    fetchData();
   },[]);
   const addToCart = (obj) =>{
     try{
       let data = cartItems.find(item => item.hash === obj.hash);
       if (data!== undefined){
         axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${data.id}`).then(setCartItems((prev)=> prev.filter(item => Number(item.hash) !== Number(obj.hash))));
+        
       }
       else{
         axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', obj).then(res=>setCartItems(prev=>[...prev, res.data]));
+       
       }
     } catch (error){
       alert('Не удалось добавить в корзину');
@@ -49,6 +66,9 @@ function App() {
       alert('Не удалось добавить в избранное');
     }
 }
+  items.map((item)=>{
+    item.hash = crc32.str(item.id + item.title + item.description); 
+  })
 
   const onChangeSearchInput = (event) => {
     setSearchValue(event.target.value);
@@ -72,11 +92,13 @@ function App() {
      <Routes>
         <Route  path="/" element={<Home
         items = {items}
+        favorites = {favorites}
         searchValue = {searchValue}
         setSearchValue = {setSearchValue}
         onChangeSearchInput = {onChangeSearchInput}
         onAddToFavorite = {onAddToFavorite}
         addToCart = {addToCart}
+        cartItems = {cartItems}
         />}
         />
         <Route  path="/favorites" element={

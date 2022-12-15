@@ -1,7 +1,7 @@
 import Card from "../components/Card/Card";
-import crc32 from 'crc-32';
 
-function Home({items, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart}) {
+
+function Home({items, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
     return(
         <div className="content">
         <div className="titleAndSearch">
@@ -52,21 +52,24 @@ function Home({items, searchValue, setSearchValue, onChangeSearchInput,onAddToFa
           </div>
         </div>
         <div className="cards">
+
           {items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
             <Card
               key = {item.id}
-              id = {item.id}
+              hash = {item.hash}
               title={item.title}
               imgURL={item.imgURL}
               description={item.description}
               price={item.price}
-              hash = {crc32.str(item.id + item.title + item.description)}
               onFavorite = {(obj) => onAddToFavorite(obj)}
+              favorited = {favorites.some((obj)=>obj.hash===item.hash)}
+              added = {cartItems.some((obj)=>obj.hash===item.hash)}
               onPlus={(obj)=>{
                 addToCart(obj);
               }}
             ></Card>
           ))}
+          {console.log(cartItems)}
         </div>
       </div>
     );
