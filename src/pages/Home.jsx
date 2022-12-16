@@ -1,7 +1,8 @@
 import Card from "../components/Card/Card";
+import Skeleton from "../components/Skeleton";
 
 
-function Home({items, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
+function Home({items, isLoading, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
     return(
         <div className="content">
         <div className="titleAndSearch">
@@ -52,8 +53,10 @@ function Home({items, searchValue, setSearchValue, onChangeSearchInput,onAddToFa
           </div>
         </div>
         <div className="cards">
+          {console.log(isLoading)}
 
-          {items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
+          {isLoading ? [...new Array(10)].map(()=><Skeleton/>):
+            items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
             <Card
               key = {item.id}
               hash = {item.hash}
@@ -69,7 +72,7 @@ function Home({items, searchValue, setSearchValue, onChangeSearchInput,onAddToFa
               }}
             ></Card>
           ))}
-          {console.log(cartItems)}
+         
         </div>
       </div>
     );
