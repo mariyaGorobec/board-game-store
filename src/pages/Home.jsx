@@ -53,8 +53,7 @@ function Home({items, isLoading, searchValue, setSearchValue, onChangeSearchInpu
           </div>
         </div>
         <div className="cards">
-          {console.log(isLoading)}
-
+          
           {isLoading ? [...new Array(10)].map(()=><Skeleton/>):
             items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
             <Card

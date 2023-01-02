@@ -1,99 +1,140 @@
-import styles from './Drawer.module.scss'
+import styles from "./Drawer.module.scss";
+import Info from "../Info.jsx";
+import React from "react";
+import AppContext from "../../context";
+import axios  from "axios";
 
-function Drawer({onClose, onRemove, items = []}){
-    return (
-        <div className={styles.overlay}>
-        <div className={styles.drawer}>
-          <h2>
-            Корзина
-            <svg
-              onClick={onClose}
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.5"
-                y="0.5"
-                width="31"
-                height="31"
-                rx="7.5"
-                fill="white"
-                stroke="#f47c77"
-              />
-              <path
-                d="M20.0799 18.6155L17.6311 16.1667L20.0798 13.718C21.0241 12.7738 19.5596 11.3093 18.6154 12.2536L16.1667 14.7023L13.7179 12.2535C12.7738 11.3095 11.3095 12.7738 12.2535 13.7179L14.7023 16.1667L12.2536 18.6154C11.3093 19.5596 12.7738 21.0241 13.718 20.0798L16.1667 17.6311L18.6155 20.0799C19.5597 21.0241 21.0241 19.5597 20.0799 18.6155Z"
-                fill="#f47c77"
-              />
-            </svg>
-          </h2>
-          {items.length > 0 ? <div> <div className={styles.items}>
-            {items.map((obj)=>
-            <div key = {obj} className={styles.cartItem}>
-            <img
-              width={70}
-              height={70}
-              src={obj.imgURL}
-              alt={obj.title}
-            ></img>
-            <div>
-              <p>{obj.title}</p>
-              <b>{obj.price}</b>
+function Drawer({ onClose, onRemove, items = [] }) {
+  const {setCartItems, cartItems} = React.useContext(AppContext);
+  const [isOrderComplete, setIsOrderComplete] = React.useState(false);
+  const [orderId, setOrderId] = React.useState(null);
+  
+ const delay = (ms)=> new Promise((resolve)=>setTimeout(resolve,ms));
+
+  const onClickOrder= async()=>{
+   try {
+    const {data} = await axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/orders', {
+      items: cartItems,
+    });
+    setOrderId(data.id);
+    setIsOrderComplete(true);
+      for(let i = 0; i<cartItems.length;i++){
+        const a = cartItems[i];
+        let b = cartItems.find(item => item.hash === a.hash);
+        if (b!== undefined){
+          await axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${b.id}`).then(setCartItems((prev)=> prev.filter(item => Number(item.hash) !== Number(a.hash))));
+        }
+       
+      }
+   
+   } catch (error) {
+    alert("Ошибка при создании заказа! :С");
+   }
+  }
+
+  return (
+    <div className={styles.overlay}>
+      <div className={styles.drawer}>
+        <h2>
+          Корзина
+          <svg
+            onClick={onClose}
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="0.5"
+              y="0.5"
+              width="31"
+              height="31"
+              rx="7.5"
+              fill="white"
+              stroke="#f47c77"
+            />
+            <path
+              d="M20.0799 18.6155L17.6311 16.1667L20.0798 13.718C21.0241 12.7738 19.5596 11.3093 18.6154 12.2536L16.1667 14.7023L13.7179 12.2535C12.7738 11.3095 11.3095 12.7738 12.2535 13.7179L14.7023 16.1667L12.2536 18.6154C11.3093 19.5596 12.7738 21.0241 13.718 20.0798L16.1667 17.6311L18.6155 20.0799C19.5597 21.0241 21.0241 19.5597 20.0799 18.6155Z"
+              fill="#f47c77"
+            />
+          </svg>
+        </h2>
+        {items.length > 0 ? (
+          <>
+            {" "}
+            <div className={styles.items}>
+              {items.map((obj) => (
+                
+                <div key={obj} className={styles.cartItem}>
+                  <img
+                    width={70}
+                    height={70}
+                    src={obj.imgURL}
+                    alt={obj.title}
+                  ></img>
+                  <div>
+                    <p>{obj.title}</p>
+                    <b>{obj.price}</b>
+                  </div>
+                  <svg
+                    onClick={() => onRemove(obj.id)}
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      x="0.5"
+                      y="0.5"
+                      width="31"
+                      height="31"
+                      rx="7.5"
+                      fill="white"
+                      stroke="#f47c77"
+                    />
+                    <path
+                      d="M20.0799 18.6155L17.6311 16.1667L20.0798 13.718C21.0241 12.7738 19.5596 11.3093 18.6154 12.2536L16.1667 14.7023L13.7179 12.2535C12.7738 11.3095 11.3095 12.7738 12.2535 13.7179L14.7023 16.1667L12.2536 18.6154C11.3093 19.5596 12.7738 21.0241 13.718 20.0798L16.1667 17.6311L18.6155 20.0799C19.5597 21.0241 21.0241 19.5597 20.0799 18.6155Z"
+                      fill="#f47c77"
+                    />
+                  </svg>
+                </div>
+              ))}
             </div>
-            <svg
-              onClick={()=>onRemove(obj.id)}
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="0.5"
-                y="0.5"
-                width="31"
-                height="31"
-                rx="7.5"
-                fill="white"
-                stroke="#f47c77"
-              />
-              <path
-                d="M20.0799 18.6155L17.6311 16.1667L20.0798 13.718C21.0241 12.7738 19.5596 11.3093 18.6154 12.2536L16.1667 14.7023L13.7179 12.2535C12.7738 11.3095 11.3095 12.7738 12.2535 13.7179L14.7023 16.1667L12.2536 18.6154C11.3093 19.5596 12.7738 21.0241 13.718 20.0798L16.1667 17.6311L18.6155 20.0799C19.5597 21.0241 21.0241 19.5597 20.0799 18.6155Z"
-                fill="#f47c77"
-              />
-            </svg>
-          </div>)}
-          </div>
-          <div className={styles.cartTotalBlock}>
-            <ul>
-              <li>
-                <span>Итого: </span>
-                <div></div>
-                <b>1490</b>
-              </li>
-              <li>
-                <span>Налог 5%:</span>
-                <div></div>
-                <b>74.5</b>
-              </li>
-            </ul>
-            <button className={styles.orangeButton}>
-              Оформить заказ <img className = {styles.arrow} src="/img/arrow.svg" alt="arrow"></img>
-            </button>
-          </div> </div> : <div className={styles.emptyCart}>
-           
-            <img width = {150} height = {150} src='/img/empty-cart.jpg'></img>
-            <h3>Корзине грустно, когда в ней пусто :С</h3>
-            <p>Пожалуйста, добавьте хотя бы один товар в корзину, чтобы сделать заказ.</p>
-            <button onClick={onClose} className={styles.orangeButton}>
-            <img className = {styles.arrow} src="/img/arrow.svg" alt="arrow"></img>Вернуться назад
-            </button>
-            </div>}          
-        </div>
+            <div className={styles.cartTotalBlock}>
+              <ul>
+                <li>
+                  <span>Итого: </span>
+                  <div></div>
+                  <b>1490</b>
+                </li>
+                <li>
+                  <span>Налог 5%:</span>
+                  <div></div>
+                  <b>74.5</b>
+                </li>
+              </ul>
+              <button onClick={onClickOrder} className={styles.orangeButton}>
+                Оформить заказ{" "}
+                <img
+                  className={styles.arrow}
+                  src="/img/arrow.svg"
+                  alt="arrow"
+                ></img>
+              </button>
+            </div>{" "}
+          </>
+        ) : (
+          <Info
+            title={isOrderComplete ? "Поздравляю! Заказ оформлен!" :"Корзине грустно, когда в ней пусто :С"}
+            description={isOrderComplete ? `Ваш заказ №${orderId} оформлен и скоро будет передан курьерской службе.` : "Пожалуйста, добавьте хотя бы один товар в корзину, чтобы сделать заказ."}
+            imgURL={isOrderComplete ? "/img/complete-order.jpg" :"/img/empty-cart.jpg"}
+          ></Info>
+        )}
       </div>
-    );
+    </div>
+  );
 }
 
 export default Drawer;

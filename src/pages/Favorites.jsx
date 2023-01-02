@@ -1,14 +1,17 @@
 import Card from "../components/Card/Card";
-import crc32 from 'crc-32';
+import AppContext from "../context";
+import React from "react";
 
-function Favorites({items, onAddToFavorite}){
+
+function Favorites({onAddToFavorite}){
+  const {favorites} = React.useContext(AppContext);
  return (
     <div className="content">
         <div className="titleAndSearch">
              <h1>Избранное</h1>
         </div>
     <div className="cards">
-    {items.map((item,index) => (
+    {favorites.map((item,index) => (
             <Card
               key = {item.title}
               id = {item.id}

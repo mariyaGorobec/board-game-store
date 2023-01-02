@@ -1,6 +1,7 @@
 import styles from "./Card.module.scss";
 
 import React from "react";
+import AppContext from "../../context";
 
 
 
@@ -8,7 +9,6 @@ function divideNumberIntoСategory(num) {
   let n = num.toString();
   return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + " ");
 }
-
 function Card({
   hash,
   onFavorite,
@@ -18,12 +18,11 @@ function Card({
   description,
   onPlus,
   favorited = false,
-  added = false
+  
 }) {
-  const [isAdded, setIsAdded] = React.useState(added);
+  
   const [isFavorite, setIsFavorite] = React.useState(favorited);
- 
-
+  const {isItemAdded} = React.useContext(AppContext);
   return (
     <div className={styles.card}>
      
@@ -89,12 +88,12 @@ function Card({
               alt="Кнопка добавить или кнопка добавленно"
               className={styles.plus}
               onClick={() => {
-                setIsAdded(!isAdded);
-                onPlus({ hash, title, imgURL, price });
+               
+                onPlus({ hash, title, imgURL, price});
               }}
               width="15"
               height="15"
-              src={isAdded ? "/img/btn-checked.svg" : "/img/plus.svg"}
+              src={isItemAdded(hash) ? "/img/btn-checked.svg" : "/img/plus.svg"}
             ></img>
           </div>
       
