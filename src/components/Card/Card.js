@@ -2,13 +2,8 @@ import styles from "./Card.module.scss";
 
 import React from "react";
 import AppContext from "../../context";
+import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
 
-
-
-function divideNumberIntoСategory(num) {
-  let n = num.toString();
-  return n.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1" + " ");
-}
 function Card({
   hash,
   onFavorite,
@@ -82,7 +77,7 @@ function Card({
           <div className={styles.cardBottom}>
             <div className={styles.price}>
               <span> Цена:</span>
-              <b>{divideNumberIntoСategory(price)} руб.</b>
+              <b>{<DivideNumberIntoСategory num = {price}></DivideNumberIntoСategory>} руб.</b>
             </div>
             <img
               alt="Кнопка добавить или кнопка добавленно"

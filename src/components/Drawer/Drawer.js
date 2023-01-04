@@ -1,15 +1,21 @@
 import styles from "./Drawer.module.scss";
 import Info from "../Info.jsx";
 import React from "react";
-import AppContext from "../../context";
+
 import axios  from "axios";
+import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
+import { useCart } from "../hooks/useCart";
 
 function Drawer({ onClose, onRemove, items = [] }) {
-  const {setCartItems, cartItems} = React.useContext(AppContext);
+  const {setCartItems, cartItems,totalPrice} = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
   
- const delay = (ms)=> new Promise((resolve)=>setTimeout(resolve,ms));
+  let delivery = 0;
+  totalPrice<5000?delivery+=250:delivery=0;
+
+  let discount = 0;
+  totalPrice<10000?discount=0:discount=totalPrice*0.02;
 
   const onClickOrder= async()=>{
    try {
@@ -75,7 +81,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
                   ></img>
                   <div>
                     <p>{obj.title}</p>
-                    <b>{obj.price}</b>
+                    <b>{<DivideNumberIntoСategory num = {obj.price}></DivideNumberIntoСategory>} руб.</b>
                   </div>
                   <svg
                     onClick={() => onRemove(obj.id)}
@@ -105,14 +111,19 @@ function Drawer({ onClose, onRemove, items = [] }) {
             <div className={styles.cartTotalBlock}>
               <ul>
                 <li>
-                  <span>Итого: </span>
+                  <span>Доставка по городу: </span>
                   <div></div>
-                  <b>1490</b>
+                  <b>{delivery} руб.</b>
                 </li>
                 <li>
-                  <span>Налог 5%:</span>
+                  <span>Скидка 2%: </span>
                   <div></div>
-                  <b>74.5</b>
+                  <b>{Math.round(discount)} руб.</b>
+                </li>
+                <li>
+                  <span>Итого:</span>
+                  <div></div>
+                  <b>{<DivideNumberIntoСategory num = {Math.round(totalPrice+delivery-discount)}></DivideNumberIntoСategory>} руб.</b>
                 </li>
               </ul>
               <button onClick={onClickOrder} className={styles.orangeButton}>

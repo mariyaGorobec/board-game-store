@@ -1,7 +1,13 @@
 import styles from "./Header.module.scss";
 import {Link} from 'react-router-dom';
+import React from "react";
+
+import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
+import { useCart } from "../hooks/useCart";
 
 function Header(props) {
+  const {totalPrice} = useCart();
+  console.log(totalPrice);
   return (
     <header>
       <Link to = "/">
@@ -46,7 +52,7 @@ function Header(props) {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>100000 руб.</span>
+            <span>{<DivideNumberIntoСategory num = {totalPrice}></DivideNumberIntoСategory>} руб.</span>
           </li>
           <li>
             <Link to="/favorites">
