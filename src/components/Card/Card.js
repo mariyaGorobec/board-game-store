@@ -22,7 +22,7 @@ function Card({
     <div className={styles.card}>
      
           <div className={styles.cardTop}>
-            <div
+            {onFavorite && <div
               className={styles.favorite}
               onClick={() => {
                 setIsFavorite(!isFavorite);
@@ -64,7 +64,7 @@ function Card({
                   src="/img/unliked.svg"
                 ></img>
               )}
-            </div>
+            </div>}
             <img
               width={133}
               height={112}
@@ -79,7 +79,7 @@ function Card({
               <span> Цена:</span>
               <b>{<DivideNumberIntoСategory num = {price}></DivideNumberIntoСategory>} руб.</b>
             </div>
-            <img
+            {onPlus && <img
               alt="Кнопка добавить или кнопка добавленно"
               className={styles.plus}
               onClick={() => {
@@ -89,7 +89,7 @@ function Card({
               width="15"
               height="15"
               src={isItemAdded(hash) ? "/img/btn-checked.svg" : "/img/plus.svg"}
-            ></img>
+            ></img>}
           </div>
       
     </div>

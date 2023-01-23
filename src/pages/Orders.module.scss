@@ -1,0 +1,13 @@
+.orders{
+    display: flex;
+    flex-direction: column-reverse;
+    
+    h2{
+        justify-self: center;
+        opacity: 60%;
+    }
+    h4{
+        opacity: 40%;
+       
+    }
+}

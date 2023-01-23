@@ -10,19 +10,26 @@ function Drawer({ onClose, onRemove, items = [] }) {
   const {setCartItems, cartItems,totalPrice} = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
+  const [orderID, setOrderID] = React.useState([]);
   
+ 
   let delivery = 0;
   totalPrice<5000?delivery+=250:delivery=0;
 
   let discount = 0;
   totalPrice<10000?discount=0:discount=totalPrice*0.02;
-
+  
   const onClickOrder= async()=>{
    try {
-    const {data} = await axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/orders', {
-      items: cartItems,
+    const total = Math.round(totalPrice+delivery-discount);
+    const {data} = await axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/orders', { 
+    items: cartItems,
+    id: cartItems.id,
+    totalPrice: total,
     });
+    
     setOrderId(data.id);
+    setOrderID(data.id);
     setIsOrderComplete(true);
       for(let i = 0; i<cartItems.length;i++){
         const a = cartItems[i];
@@ -32,13 +39,14 @@ function Drawer({ onClose, onRemove, items = [] }) {
         }
        
       }
-   
+      
    } catch (error) {
     alert("Ошибка при создании заказа! :С");
    }
   }
 
   return (
+   
     <div className={styles.overlay}>
       <div className={styles.drawer}>
         <h2>
@@ -145,6 +153,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
         )}
       </div>
     </div>
+    
   );
 }
 

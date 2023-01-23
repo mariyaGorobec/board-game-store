@@ -8,6 +8,7 @@ import {Route, Routes} from 'react-router-dom';
 import React from "react";
 import crc32 from 'crc-32';
 import AppContext from "./context";
+import Orders from "./pages/Orders";
 
 function App() {
   const [items, setItems] = React.useState([]);
@@ -113,6 +114,12 @@ function App() {
           <Favorites
             
             onAddToFavorite={onAddToFavorite}
+          />}
+        />
+         <Route  path="/orders" element={
+          <Orders
+            
+            /*onAddToFavorite={onAddToFavorite}*/
           />}
         />
       </Routes>
