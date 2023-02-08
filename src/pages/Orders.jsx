@@ -1,4 +1,4 @@
-import Card from "../components/Card/Card";
+import style from '../index.module.scss'
 import styles from "./Orders.module.scss";
 import React from "react";
 import axios from "axios";
@@ -25,11 +25,10 @@ function Orders(){
        // console.log(orders);
     })();
   },[])
-  console.log(orderId);
 
  return (
-    <div className="content">
-        <div className="titleAndSearch">
+    <div className={style.content}>
+        <div className={style.titleAndSearch}>
              <h1>Мои заказы</h1>
         </div>
     <div className={styles.orders}>

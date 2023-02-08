@@ -1,16 +1,16 @@
 import Card from "../components/Card/Card";
 import AppContext from "../context";
 import React from "react";
-
+import style from '../index.module.scss'
 
 function Favorites({onAddToFavorite}){
   const {favorites} = React.useContext(AppContext);
  return (
-    <div className="content">
-        <div className="titleAndSearch">
+    <div className={style.content}>
+        <div className={style.titleAndSearch}>
              <h1>Избранное</h1>
         </div>
-    <div className="cards">
+    <div className={style.cards}>
     {favorites.map((item,index) => (
             <Card
               key = {item.title}

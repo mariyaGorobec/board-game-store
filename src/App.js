@@ -2,7 +2,7 @@ import Home from "./pages/Home";
 import Drawer from "./components/Drawer/Drawer";
 import Header from "./components/Header/Header";
 import axios  from "axios";
-
+import style from './index.module.scss'
 import Favorites from "./pages/Favorites";
 import {Route, Routes} from 'react-router-dom';
 import React from "react";
@@ -81,17 +81,19 @@ function App() {
 
   return (
    <AppContext.Provider value={{favorites, items, cartItems, isItemAdded, setCartOpened, setCartItems}}>
-     <div className="wrapper">
-      {cartOpened ? (
+     <div className={style.wrapper}>
+      {}
+      {
         <Drawer
           key = {items.id}
+          opened = {cartOpened}
           onRemove = {onRemoveItem}
           items={cartItems}
           onClose={() => {
             setCartOpened(false);
           }}
         />
-      ) : undefined}
+      }
       <Header
         onClickCart={() => {
           setCartOpened(true);
@@ -108,6 +110,7 @@ function App() {
         addToCart = {addToCart}
         cartItems = {cartItems}
         isLoading = {isLoading}
+       
         />}
         />
         <Route  path="/favorites" element={

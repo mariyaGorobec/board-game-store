@@ -1,4 +1,5 @@
 body {
+  
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -8,6 +9,7 @@ body {
   background: linear-gradient(to bottom right, #f47c77, #f8c145) no-repeat;
   background-size: 100%;
   background-attachment: fixed;
+  
 }
 *{
   color: #203040;
@@ -19,13 +21,16 @@ body {
   border-radius: 20px;
   max-width: 1080px;
   margin: 50px auto;
+  .contentOverflow{
+    overflow: hidden;
+  }
 }
 
 
 
 .content {
   padding: 40px;
-
+  
   .titleAndSearch{
     .headline{
       display: flex;
@@ -80,6 +85,7 @@ body {
 .cards{
   display: flex;
   flex-wrap: wrap;
+  
 }
 
 

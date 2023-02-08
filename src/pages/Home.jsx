@@ -1,20 +1,21 @@
 import Card from "../components/Card/Card";
 import Skeleton from "../components/Skeleton";
+import style from '../index.module.scss'
 
 
 function Home({items, isLoading, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
     return(
-        <div className="content">
-        <div className="titleAndSearch">
-          <div className="headline">
+        <div className={style.content}>
+        <div className={style.titleAndSearch}>
+          <div className={style.headline}>
           <h1>{searchValue ? `Поиск по запросу: ` : "Все настолки"}
           </h1>
           <span>{searchValue ?  searchValue : ""}</span>
           </div>
-          <div className="searchBlock">
+          <div className={style.searchBlock}>
           {searchValue&&<svg
               onClick = {()=> setSearchValue('')}
-              className="clear"
+              className={style.clear}
               width="32"
               height="32"
               viewBox="0 0 32 32"
@@ -52,7 +53,7 @@ function Home({items, isLoading, searchValue, setSearchValue, onChangeSearchInpu
             <input onChange={onChangeSearchInput} value = {searchValue} placeholder="Найти..."></input>
           </div>
         </div>
-        <div className="cards">
+        <div className={style.cards}>
           
           {isLoading ? [...new Array(10)].map(()=><Skeleton/>):
             items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
