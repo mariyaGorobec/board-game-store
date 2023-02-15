@@ -89,7 +89,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                   ></img>
                   <div>
                     <p>{obj.title}</p>
-                    <b>{<DivideNumberIntoСategory num = {obj.price}></DivideNumberIntoСategory>} руб.</b>
+                    <b>{obj.price}руб.</b>
                   </div>
                   <svg
                     onClick={() => onRemove(obj.id)}
@@ -131,7 +131,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b>{<DivideNumberIntoСategory num = {Math.round(totalPrice+delivery-discount)}></DivideNumberIntoСategory>} руб.</b>
+                  <b>{Math.round(totalPrice+delivery-discount)}руб.</b>
                 </li>
               </ul>
               <button onClick={onClickOrder} className={styles.orangeButton}>

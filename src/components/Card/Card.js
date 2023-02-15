@@ -1,5 +1,5 @@
 import styles from "./Card.module.scss";
-
+import throttle from 'lodash.throttle';
 import React from "react";
 import AppContext from "../../context";
 import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
@@ -17,7 +17,12 @@ function Card({
 }) {
   
   const [isFavorite, setIsFavorite] = React.useState(favorited);
-  const {isItemAdded} = React.useContext(AppContext);
+  const {isItemAdded,addToCart} = React.useContext(AppContext);
+  const onClick = throttle(addToCart, 50000);
+  function f(a) {
+    console.log(a)
+  }
+ console.log(typeof onClick);
   return (
     <div className={styles.card}>
      
@@ -77,15 +82,12 @@ function Card({
           <div className={styles.cardBottom}>
             <div className={styles.price}>
               <span> Цена:</span>
-              <b>{<DivideNumberIntoСategory num = {price}></DivideNumberIntoСategory>} руб.</b>
+              <b>{price} руб.</b>
             </div>
             {onPlus && <img
               alt="Кнопка добавить или кнопка добавленно"
               className={styles.plus}
-              onClick={() => {
-               
-                onPlus({ hash, title, imgURL, price});
-              }}
+              onClick={()=>onClick({ hash, title, imgURL, price})}
               width="15"
               height="15"
               src={isItemAdded(hash) ? "/img/btn-checked.svg" : "/img/plus.svg"}

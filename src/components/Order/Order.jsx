@@ -23,7 +23,7 @@ const Order = ({ item, orderId, totalPrice }) => {
       </div>
       <h4>
         Общая стоимость заказа (с учётом доставки и скидки):{" "}
-        <DivideNumberIntoСategory num={totalPrice}></DivideNumberIntoСategory>{" "}
+        {totalPrice}
         руб.
       </h4>
     </div>
