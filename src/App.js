@@ -80,7 +80,7 @@ function App() {
   }
 
   return (
-   <AppContext.Provider value={{favorites, items, cartItems, isItemAdded, setCartOpened, setCartItems,addToCart}}>
+   <AppContext.Provider value={{favorites, items, cartItems, isItemAdded, setCartOpened, setCartItems,addToCart, isLoading}}>
      <div className={style.wrapper}>
       {}
       {

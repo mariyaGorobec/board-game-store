@@ -12,6 +12,7 @@ function Orders(){
     const [orderId, setOrderId] = React.useState([]); 
     const [totalPrice, setTotalPrice] = React.useState([]); 
     
+    
   React.useEffect(() =>{
     (async () => {
         const {data} = await axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/orders');
@@ -31,10 +32,14 @@ function Orders(){
         <div className={style.titleAndSearch}>
              <h1>Мои заказы</h1>
         </div>
-    <div className={styles.orders}>
-  
-  {isLoading ? [...new Array(10)].map(()=><Skeleton/>) : (
-    orders.map((item,index) =><Order item = {item} orderId = {orderId[index]} totalPrice = {totalPrice[index]} ></Order>))}
+    <div className={`${styles.orders} ${isLoading ? '' : styles.ordersColumn}`}>
+  {isLoading ? [...new Array(10)].map(()=><Skeleton/>) : (orders.length > 0 ? (orders.map((item,index) =><Order item = {item} orderId = {orderId[index]} totalPrice = {totalPrice[index]} ></Order>)): <div className= {styles.emptyOrder}>
+    <img src = "/img/purchase-order-4.png" width={130} height={130}></img>
+    <h3>Здесь могли быть ваши заказы:С</h3>
+    <p>Пожалуйста, сделайте хотя бы один заказ, чтобы он отобразился здесь.</p>
+    </div> )}
+  {/*isLoading ? [...new Array(10)].map(()=><Skeleton/>) : (
+    orders.map((item,index) =><Order item = {item} orderId = {orderId[index]} totalPrice = {totalPrice[index]} ></Order>))*/}
     </div>
   </div>
  );   
