@@ -47,7 +47,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
 
   return (
    
-    <div className={`${styles.overlay} ${opened ? styles.overlayVisible: ''} ${opened ? document.body.style.overflowY = 'hidden': document.body.style.overflowY = 'scroll'}`}>
+    <div onClick={onClose} className={`${styles.overlay} ${opened ? styles.overlayVisible: ''} ${opened ? document.body.style.overflowY = 'hidden': document.body.style.overflowY = 'scroll'}`}>
       <div className={styles.drawer}>
         <h2>
           Корзина
