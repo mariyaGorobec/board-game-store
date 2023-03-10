@@ -23,7 +23,7 @@ function Favorites({onAddToFavorite}){
               description={item.description}
               price={item.price}
               favorited = {true}
-              onFavorite = {onAddToFavorite}
+              onFavorite = {() => onAddToFavorite(item._id)}
             ></Card>
     ))) : <div className= {styles.emptyBookmarks}>
     <img src = "/img/Broken_Heart_symbol.svg.png" width={130} height={130}></img>

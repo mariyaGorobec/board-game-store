@@ -17,56 +17,123 @@ function App() {
   const [favorites, setFavorites] =  React.useState([]);
   const [searchValue, setSearchValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true);
+  const cart = [];
+  const favorite = [];
+  const arr1 = [];
+  const arr2 =[];
  
+  
   React.useEffect(()=>{
   
     async function fetchData(){
-      const cartResponse = await axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/cart');
-      const favoriteResponse = await axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/favorites');
-      const itemsResponse = await axios.get('https://634e5d25f34e1ed826899d31.mockapi.io/items');
+      const token = window.localStorage.getItem('token');
+      if (token){
+        await axios('http://localhost:5555/cart',{
+        headers: {
+          'authorization': `Bearer ${token}`
+        },
+      }).then(resp=>resp.data.map(item=>axios.get(`http://localhost:5555/games/${item}`).then(res=>{
+       cart.push(res.data)
+      })));
+      await axios('http://localhost:5555/favorites',{
+        headers: {
+          'authorization': `Bearer ${token}`
+        },
+      }).then(resp=>resp.data.map(item=>axios.get(`http://localhost:5555/games/${item}`).then(res=>{
+        favorite.push(res.data)
+      })));
+      
+    
+      }
+   
+      const itemsResponse = await axios.get('http://localhost:5555/games');
+      
+      
 
-      setIsLoading(false);
-
-      setCartItems(cartResponse.data);
-      setFavorites(favoriteResponse.data);
+      setCartItems(cart);
+      setFavorites(favorite);
       setItems(itemsResponse.data);
+      setIsLoading(false);
 
     }
     fetchData();
   },[]);
-  const addToCart = (obj) =>{
-    try{
-      let data = cartItems.find(item => item.hash === obj.hash);
-      if (data!== undefined){
-        axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${data.id}`).then(setCartItems((prev)=> prev.filter(item => Number(item.hash) !== Number(obj.hash))));
-      }
-      else{
-        axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', obj).then(res=>setCartItems(prev=>[...prev, res.data]));
+
+
+  const addToCart = (id) =>{
+    let data = cartItems.find(item=>item._id===id)
+    if(!data){
+      const newItem = []
+    const token = window.localStorage.getItem('token');
+    if (token){
+      axios(`http://localhost:5555/addToCart?productId=${id}`,{
+      headers: {
+        'authorization': `Bearer ${token}`
+      },
+    }).then(resp=>resp.data.map(item=>axios.get(`http://localhost:5555/games/${item.id}`).then(res=>{
+      newItem.push(res.data);
+     })))
+     setCartItems(newItem);
+  }
+    }
+    else {
+      onRemoveItem(id);
+    }
+        //axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', obj).then(res=>setCartItems(prev=>[...prev, res.data]));
        
-      }
-    } catch (error){
-      alert('Не удалось добавить в корзину');
-    }
+   
+  }
+  const removeFromFavorites = (id) => {
+    const token = window.localStorage.getItem('token');
+    if (token){
+      axios(`http://localhost:5555/removeFromFavorites?productId=${id}`,{
+      headers: {
+        'authorization': `Bearer ${token}`
+      },
+    }).then(res=>setFavorites((prev)=> prev.filter(item => item._id !== id)));
   }
 
+
+  }
   const onRemoveItem = (id) => {
-    axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${id}`);
-    setCartItems((prev)=> prev.filter(item => item.id !== id));
+    const token = window.localStorage.getItem('token');
+    if (token){
+      axios(`http://localhost:5555/removeFromCart?productId=${id}`,{
+      headers: {
+        'authorization': `Bearer ${token}`
+      },
+    }).then(res=>setCartItems((prev)=> prev.filter(item => item._id !== id)));
   }
 
-  const onAddToFavorite = (obj) => {
-    try{
-      let data = favorites.find(item => item.hash === obj.hash);
-      if (data!== undefined){
-        axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/favorites/${data.id}`).then(setFavorites((prev)=> prev.filter(item => Number(item.hash) !== Number(obj.hash))));
-      }
-      else{
-        axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/favorites', obj).then(res=>setFavorites(prev=>[...prev, res.data]));
-      }
-    } catch (error){
-      alert('Не удалось добавить в избранное');
+
+  }
+  const onAddToFavorite = (id) => {
+     let data = favorites.find(item=>item._id===id)
+    if(!data){
+      const newFavorite = []
+    const token = window.localStorage.getItem('token');
+    if (token){
+      axios(`http://localhost:5555/addToFavorites?productId=${id}`,{
+      headers: {
+        'authorization': `Bearer ${token}`
+      },
+    }).then(resp=>resp.data.map(item=>axios.get(`http://localhost:5555/games/${item.id}`).then(res=>{
+      newFavorite.push(res.data);
+     })))
+     setFavorites(newFavorite);
+  }
     }
+    else {
+      removeFromFavorites(id);
+    }
+        //axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', obj).then(res=>setCartItems(prev=>[...prev, res.data]));
+
+   
 }
+
+
+
+
   items.map((item)=>{
     item.hash = crc32.str(item.id + item.title + item.description); 
   })
@@ -75,14 +142,13 @@ function App() {
     setSearchValue(event.target.value);
   }
 
-  const isItemAdded = (hash) =>{
-    return cartItems.some(item => item.hash === hash);
+  const isItemAdded = (_id) =>{
+    return cartItems.some(item => item._id === _id);
   }
 
   return (
-   <AppContext.Provider value={{favorites, items, cartItems, isItemAdded, setCartOpened, setCartItems,addToCart, isLoading}}>
+   <AppContext.Provider value={{favorites, items,cartItems, isItemAdded, setCartOpened, setCartItems,addToCart, isLoading}}>
      <div className={style.wrapper}>
-      {}
       {
         <Drawer
           key = {items.id}

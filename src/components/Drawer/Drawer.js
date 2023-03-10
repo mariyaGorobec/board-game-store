@@ -47,7 +47,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
 
   return (
    
-    <div onClick={onClose} className={`${styles.overlay} ${opened ? styles.overlayVisible: ''} ${opened ? document.body.style.overflowY = 'hidden': document.body.style.overflowY = 'scroll'}`}>
+    <div  className={`${styles.overlay} ${opened ? styles.overlayVisible: ''} ${opened ? document.body.style.overflowY = 'hidden': document.body.style.overflowY = 'scroll'}`}>
       <div className={styles.drawer}>
         <h2>
           Корзина
@@ -89,10 +89,10 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                   ></img>
                   <div>
                     <p>{obj.title}</p>
-                    <b><DivideNumberIntoСategory num = {obj.price}></DivideNumberIntoСategory> руб.</b>
+                    <b>руб.</b>
                   </div>
                   <svg
-                    onClick={() => onRemove(obj.id)}
+                    onClick={() => onRemove(obj._id)}
                     width="32"
                     height="32"
                     viewBox="0 0 32 32"
@@ -121,17 +121,17 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                 <li>
                   <span>Доставка по городу: </span>
                   <div></div>
-                  <b><DivideNumberIntoСategory num = {delivery}></DivideNumberIntoСategory> руб.</b>
+                  <b> руб.</b>
                 </li>
                 <li>
                   <span>Скидка 2%: </span>
                   <div></div>
-                  <b><DivideNumberIntoСategory num = {Math.round(discount)}></DivideNumberIntoСategory> руб.</b>
+                  <b> руб.</b>
                 </li>
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b><DivideNumberIntoСategory num = {Math.round(totalPrice+delivery-discount)}></DivideNumberIntoСategory> руб.</b>
+                  <b> руб.</b>
                 </li>
               </ul>
               <button onClick={onClickOrder} className={styles.orangeButton}>

@@ -59,14 +59,15 @@ function Home({items, isLoading, searchValue, setSearchValue, onChangeSearchInpu
             items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
             <Card
               key = {item.id}
+              _id={item._id}
               hash = {item.hash}
               title={item.title}
               imgURL={item.imgURL}
               description={item.description}
               price={item.price}
               onFavorite = {(obj) => onAddToFavorite(obj)}
-              favorited = {favorites.some((obj)=>obj.hash===item.hash)}
-              added = {cartItems.some((obj)=>obj.hash===item.hash)}
+              favorited = {favorites.some((obj)=>obj._id===item._id)}
+              added = {cartItems.some((obj)=>obj._id===item._id)}
               onPlus={(obj)=>{
                 addToCart(obj);
               }}

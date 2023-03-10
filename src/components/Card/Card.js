@@ -9,6 +9,7 @@ function Card({
   onFavorite,
   imgURL,
   title,
+  _id,
   price,
   description,
   onPlus,
@@ -19,10 +20,7 @@ function Card({
   const [isFavorite, setIsFavorite] = React.useState(favorited);
   const {isItemAdded,addToCart} = React.useContext(AppContext);
   const onClick = throttle(addToCart, 50000);
-  function f(a) {
-    console.log(a)
-  }
- console.log(typeof onClick);
+
   return (
     <div className={styles.card}>
      
@@ -30,8 +28,9 @@ function Card({
             {onFavorite && <div
               className={styles.favorite}
               onClick={() => {
+                
+                onFavorite(_id);
                 setIsFavorite(!isFavorite);
-                onFavorite({ title, imgURL, price, hash });
               }}
             >
               {isFavorite ? (
@@ -82,15 +81,15 @@ function Card({
           <div className={styles.cardBottom}>
             <div className={styles.price}>
               <span> Цена:</span>
-              <b><DivideNumberIntoСategory num = {price} ></DivideNumberIntoСategory> руб.</b>
+              <b></b>
             </div>
             {onPlus && <img
               alt="Кнопка добавить или кнопка добавленно"
               className={styles.plus}
-              onClick={()=>onClick({ hash, title, imgURL, price})}
+              onClick={()=>onClick(_id)}
               width="15"
               height="15"
-              src={isItemAdded(hash) ? "/img/btn-checked.svg" : "/img/plus.svg"}
+              src={isItemAdded(_id) ? "/img/btn-checked.svg" : "/img/plus.svg"}
             ></img>}
           </div>
       
