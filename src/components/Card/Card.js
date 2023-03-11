@@ -14,12 +14,13 @@ function Card({
   description,
   onPlus,
   favorited = false,
-  
+  added = false
 }) {
   
   const [isFavorite, setIsFavorite] = React.useState(favorited);
   const {isItemAdded,addToCart} = React.useContext(AppContext);
   const onClick = throttle(addToCart, 50000);
+  const [isCart, setIsCart] = React.useState(added);
 
   return (
     <div className={styles.card}>
@@ -86,10 +87,13 @@ function Card({
             {onPlus && <img
               alt="Кнопка добавить или кнопка добавленно"
               className={styles.plus}
-              onClick={()=>onClick(_id)}
+              onClick={()=>{
+                onClick(_id);
+                setIsCart(!isCart);
+              }}
               width="15"
               height="15"
-              src={isItemAdded(_id) ? "/img/btn-checked.svg" : "/img/plus.svg"}
+              src={isCart ? "/img/btn-checked.svg" : "/img/plus.svg"}
             ></img>}
           </div>
       

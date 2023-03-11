@@ -143,6 +143,7 @@ function App() {
   }
 
   const isItemAdded = (_id) =>{
+    console.log(_id)
     return cartItems.some(item => item._id === _id);
   }
 
