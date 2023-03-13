@@ -1,13 +1,11 @@
 .orders{
-    
+   
     h2{
         justify-self: center;
-        opacity: 60%;
+       margin: 0;
+       padding: 0;
     }
-    h4{
-        opacity: 40%;
-       
-    }
+    
 }
 .ordersColumn {
     display: flex;
@@ -22,3 +20,39 @@
   
     width: 100%;
 }
+.top{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    span{  font-size: 32px;
+        font-weight: 600;}
+    .name{
+        color: #f47c77;
+        margin-left: 10px;
+      
+    }
+}
+.topAndButton{
+display: flex;
+justify-content: space-between;
+}
+.orangeButton{
+    width: 150px;
+    height: 45px;
+    background: #f47c77;
+    border-radius: 18px;
+    border: 0;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+  
+    &:hover{
+      background-color: lighten($color: #f47c77, $amount: 5%);
+    }
+  
+    &:active{
+      background-color: darken($color: #f47c77, $amount: 20%);
+    }
+  }

@@ -7,10 +7,10 @@ import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
 import { useCart } from "../hooks/useCart";
 
 function Drawer({ onClose, onRemove, items = [], opened }) {
-  const {setCartItems, cartItems,totalPrice} = useCart();
+  const {setCartItems,totalPrice} = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
-  const [orderID, setOrderID] = React.useState([]);
+ 
   
  
   let delivery = 0;
@@ -22,23 +22,26 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
   const onClickOrder= async()=>{
    try {
     const total = Math.round(totalPrice+delivery-discount);
-    const {data} = await axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/orders', { 
-    items: cartItems,
-    id: cartItems.id,
-    totalPrice: total,
-    });
-    
-    setOrderId(data.id);
-    setOrderID(data.id);
-    setIsOrderComplete(true);
-      for(let i = 0; i<cartItems.length;i++){
-        const a = cartItems[i];
-        let b = cartItems.find(item => item.hash === a.hash);
-        if (b!== undefined){
-          await axios.delete(`https://634e5d25f34e1ed826899d31.mockapi.io/cart/${b.id}`).then(setCartItems((prev)=> prev.filter(item => Number(item.hash) !== Number(a.hash))));
-        }
-       
+    const token = window.localStorage.getItem('token');
+    if (token){
+      await axios.get(`http://localhost:5555/makeAnOrder?totalPrice=${total}`,{
+      headers: {
+        'authorization': `Bearer ${token}`
       }
+      
+    }).then(resp=>setOrderId(resp.data));
+    setIsOrderComplete(true);
+    await axios.get('http://localhost:5555/deleteCart',{
+      headers: {
+        'authorization': `Bearer ${token}`
+      }}).then(res=>{
+        setCartItems([]);
+        setTimeout(()=>window.location.reload(),2000);
+      });
+  }
+    //setOrderID(data.id);
+    
+      
       
    } catch (error) {
     alert("Ошибка при создании заказа! :С");
@@ -89,7 +92,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                   ></img>
                   <div>
                     <p>{obj.title}</p>
-                    <b>руб.</b>
+                    <b>{obj.price}руб.</b>
                   </div>
                   <svg
                     onClick={() => onRemove(obj._id)}
@@ -121,17 +124,17 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                 <li>
                   <span>Доставка по городу: </span>
                   <div></div>
-                  <b> руб.</b>
+                  <b>{delivery}руб.</b>
                 </li>
                 <li>
                   <span>Скидка 2%: </span>
                   <div></div>
-                  <b> руб.</b>
+                  <b>{discount} руб.</b>
                 </li>
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b> руб.</b>
+                  <b> {totalPrice}  руб.</b>
                 </li>
               </ul>
               <button onClick={onClickOrder} className={styles.orangeButton}>

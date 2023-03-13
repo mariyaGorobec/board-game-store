@@ -18,8 +18,8 @@ function Card({
 }) {
   
   const [isFavorite, setIsFavorite] = React.useState(favorited);
-  const {isItemAdded,addToCart} = React.useContext(AppContext);
-  const onClick = throttle(addToCart, 50000);
+  const {isItemAdded,isAuth,addToCart} = React.useContext(AppContext);
+  const onClick = throttle(addToCart, 10000);
   const [isCart, setIsCart] = React.useState(added);
 
   return (
@@ -32,9 +32,8 @@ function Card({
                 
                 onFavorite(_id);
                 setIsFavorite(!isFavorite);
-              }}
-            >
-              {isFavorite ? (
+              }}>
+              {isAuth?(isFavorite ? (
                 <svg
                   width="32"
                   height="32"
@@ -68,7 +67,7 @@ function Card({
                   alt="unliked"
                   src="/img/unliked.svg"
                 ></img>
-              )}
+              )):''}
             </div>}
             <img
               width={133}
@@ -82,19 +81,19 @@ function Card({
           <div className={styles.cardBottom}>
             <div className={styles.price}>
               <span> Цена:</span>
-              <b></b>
+              <b>{price} руб.</b>
             </div>
-            {onPlus && <img
+            {isAuth?(onPlus && <img
               alt="Кнопка добавить или кнопка добавленно"
               className={styles.plus}
               onClick={()=>{
                 onClick(_id);
-                setIsCart(!isCart);
+              
               }}
               width="15"
               height="15"
-              src={isCart ? "/img/btn-checked.svg" : "/img/plus.svg"}
-            ></img>}
+              src={isItemAdded(_id) ? "/img/btn-checked.svg" : "/img/plus.svg"}
+            ></img>):''}
           </div>
       
     </div>

@@ -67,7 +67,9 @@ function Home({items, isLoading, searchValue, setSearchValue, onChangeSearchInpu
               price={item.price}
               onFavorite = {(obj) => onAddToFavorite(obj)}
               favorited = {favorites.some((obj)=>obj._id===item._id)}
-              added = {cartItems.some((obj)=>obj._id===item._id)}
+              added = {
+                cartItems.some((obj)=>obj._id===item._id)
+              }
               onPlus={(obj)=>{
                 addToCart(obj);
               }}

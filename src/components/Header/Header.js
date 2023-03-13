@@ -4,9 +4,13 @@ import React from "react";
 
 import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
 import { useCart } from "../hooks/useCart";
+import AppContext from "../../context";
+
 
 function Header(props) {
   const {totalPrice} = useCart();
+
+  const {isAuth} = React.useContext(AppContext);
   return (
     <header>
       <Link to = "/">
@@ -20,7 +24,7 @@ function Header(props) {
       </Link>
       <div className={styles.headerRight}>
         <ul>
-          <li>
+         {isAuth ?(<><li>
             <svg
               onClick={props.onClickCart}
               width="25"
@@ -51,7 +55,7 @@ function Header(props) {
                 strokeLinejoin="round"
               />
             </svg>
-            <span> руб.</span>
+            <span>{totalPrice}руб.</span>
           </li>
           <li>
             <Link to="/favorites">
@@ -68,9 +72,9 @@ function Header(props) {
                 />
               </svg>
             </Link>
-          </li>
+          </li></>): ''}
           <li>
-            <Link to="/orders">
+            <Link to={isAuth?"/orders":"/login"}>
             <svg
               width="25"
               height="25"

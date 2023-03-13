@@ -9,6 +9,10 @@ import React from "react";
 import crc32 from 'crc-32';
 import AppContext from "./context";
 import Orders from "./pages/Orders";
+import Login from "./pages/Login";
+import Registration from "./pages/Registration";
+
+
 
 function App() {
   const [items, setItems] = React.useState([]);
@@ -19,40 +23,32 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const cart = [];
   const favorite = [];
-  const arr1 = [];
-  const arr2 =[];
- 
-  
+  const [isAuth,setIsAuth] = React.useState(false);
+
   React.useEffect(()=>{
   
     async function fetchData(){
+      
       const token = window.localStorage.getItem('token');
-      if (token){
+      if (token && token !== null){
+        setIsAuth(true);
+       
         await axios('http://localhost:5555/cart',{
         headers: {
           'authorization': `Bearer ${token}`
         },
-      }).then(resp=>resp.data.map(item=>axios.get(`http://localhost:5555/games/${item}`).then(res=>{
-       cart.push(res.data)
-      })));
+      }).then(res=>setCartItems(res.data));
+      
       await axios('http://localhost:5555/favorites',{
         headers: {
           'authorization': `Bearer ${token}`
         },
-      }).then(resp=>resp.data.map(item=>axios.get(`http://localhost:5555/games/${item}`).then(res=>{
-        favorite.push(res.data)
-      })));
-      
+      }).then(resp=>setFavorites(resp.data));
     
       }
    
-      const itemsResponse = await axios.get('http://localhost:5555/games');
+    await axios.get('http://localhost:5555/games').then(res=>setItems(res.data));
       
-      
-
-      setCartItems(cart);
-      setFavorites(favorite);
-      setItems(itemsResponse.data);
       setIsLoading(false);
 
     }
@@ -60,24 +56,23 @@ function App() {
   },[]);
 
 
-  const addToCart = (id) =>{
-    let data = cartItems.find(item=>item._id===id)
-    if(!data){
-      const newItem = []
+  const addToCart = async (id) =>{
+    let info = cartItems.find(item=>item._id===id)
+    if(!info){
     const token = window.localStorage.getItem('token');
     if (token){
-      axios(`http://localhost:5555/addToCart?productId=${id}`,{
+     await axios(`http://localhost:5555/addToCart?productId=${id}`,{
       headers: {
         'authorization': `Bearer ${token}`
       },
-    }).then(resp=>resp.data.map(item=>axios.get(`http://localhost:5555/games/${item.id}`).then(res=>{
-      newItem.push(res.data);
-     })))
-     setCartItems(newItem);
+    }).then(resp=>setCartItems(prev=>[...prev, resp.data]));
+     
+    
   }
     }
     else {
       onRemoveItem(id);
+
     }
         //axios.post('https://634e5d25f34e1ed826899d31.mockapi.io/cart', obj).then(res=>setCartItems(prev=>[...prev, res.data]));
        
@@ -110,17 +105,14 @@ function App() {
   const onAddToFavorite = (id) => {
      let data = favorites.find(item=>item._id===id)
     if(!data){
-      const newFavorite = []
     const token = window.localStorage.getItem('token');
     if (token){
       axios(`http://localhost:5555/addToFavorites?productId=${id}`,{
       headers: {
         'authorization': `Bearer ${token}`
       },
-    }).then(resp=>resp.data.map(item=>axios.get(`http://localhost:5555/games/${item.id}`).then(res=>{
-      newFavorite.push(res.data);
-     })))
-     setFavorites(newFavorite);
+    }).then(resp=>setFavorites(prev=>[...prev, resp.data]))
+     
   }
     }
     else {
@@ -143,12 +135,12 @@ function App() {
   }
 
   const isItemAdded = (_id) =>{
-    console.log(_id)
+ 
     return cartItems.some(item => item._id === _id);
   }
 
   return (
-   <AppContext.Provider value={{favorites, items,cartItems, isItemAdded, setCartOpened, setCartItems,addToCart, isLoading}}>
+   <AppContext.Provider value={{favorites, items,cartItems, isItemAdded, setCartOpened, setCartItems,isAuth,setIsAuth,addToCart, isLoading}}>
      <div className={style.wrapper}>
       {
         <Drawer
@@ -158,6 +150,7 @@ function App() {
           items={cartItems}
           onClose={() => {
             setCartOpened(false);
+            
           }}
         />
       }
@@ -180,17 +173,22 @@ function App() {
        
         />}
         />
+        
+        
         <Route  path="/favorites" element={
-          <Favorites
-            
-            onAddToFavorite={onAddToFavorite}
-          />}
+          isAuth ? <Favorites onAddToFavorite={onAddToFavorite}/>: <Login/>}
+        />
+        <Route  path="/login" element={
+          !isAuth ? <Login/>: <Orders/>}
+        />
+        <Route  path="/login" element={
+          !isAuth ? <Login/>: <Orders/>}
+        />
+        <Route  path="/register" element={
+          !isAuth ? <Registration/>: <Orders/>}
         />
          <Route  path="/orders" element={
-          <Orders
-            
-            /*onAddToFavorite={onAddToFavorite}*/
-          />}
+          isAuth ? <Orders/>:<Login/>}
         />
       </Routes>
     </div>

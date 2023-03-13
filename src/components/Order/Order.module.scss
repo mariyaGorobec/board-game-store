@@ -2,5 +2,21 @@
     display: flex;
     flex-wrap:wrap;
   flex-direction: row;
+ 
   
 }
+.top{
+  display: flex;
+  align-items: center;
+  span{
+    font-size: 18.72px;
+    font-weight: 800;
+  }
+}
+.priceAndDate{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  opacity: 60%;
+}
+
