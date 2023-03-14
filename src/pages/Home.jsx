@@ -3,7 +3,7 @@ import Skeleton from "../components/Skeleton";
 import style from '../index.module.scss'
 
 
-function Home({items, isLoading, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
+function Home({items, onRemoveProduct, isLoading, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
     return(
         <div className={style.content}>
         <div className={style.titleAndSearch}>
@@ -73,6 +73,10 @@ function Home({items, isLoading, searchValue, setSearchValue, onChangeSearchInpu
               onPlus={(obj)=>{
                 addToCart(obj);
               }}
+              onRemoveProduct={(obj)=> {
+                onRemoveProduct(obj)
+              }}
+
             ></Card>
           ))}
          

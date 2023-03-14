@@ -11,7 +11,8 @@ import AppContext from "./context";
 import Orders from "./pages/Orders";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
-
+import NewGame from "./pages/NewGame";
+import EditingGame from "./pages/EditingGame";
 
 
 function App() {
@@ -21,17 +22,24 @@ function App() {
   const [favorites, setFavorites] =  React.useState([]);
   const [searchValue, setSearchValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true);
-  const cart = [];
-  const favorite = [];
+  const [isAdmin, setIsAdmin] = React.useState(false);
   const [isAuth,setIsAuth] = React.useState(false);
+  const [idProduct,setIdProduct] = React.useState();
 
   React.useEffect(()=>{
   
     async function fetchData(){
       
+      
       const token = window.localStorage.getItem('token');
       if (token && token !== null){
-        setIsAuth(true);
+        await axios('http://localhost:5555/auth/me',{
+        headers: {
+          'authorization': `Bearer ${token}`
+        },
+      }).then(res=>setIsAdmin(res.data.role));
+        if(!isAdmin){
+          setIsAuth(true);
        
         await axios('http://localhost:5555/cart',{
         headers: {
@@ -45,6 +53,8 @@ function App() {
         },
       }).then(resp=>setFavorites(resp.data));
     
+        }
+        
       }
    
     await axios.get('http://localhost:5555/games').then(res=>setItems(res.data));
@@ -100,8 +110,19 @@ function App() {
     }).then(res=>setCartItems((prev)=> prev.filter(item => item._id !== id)));
   }
 
+  }
+  const onRemoveProduct = (id) => {
+    const token = window.localStorage.getItem('token');
+    if (token){
+      axios(`http://localhost:5555/game?productId=${id}`,{
+      headers: {
+        'authorization': `Bearer ${token}`
+      },
+    }).then(res=>setItems((prev)=> prev.filter(item => item._id !== id)));
+  }
 
   }
+
   const onAddToFavorite = (id) => {
      let data = favorites.find(item=>item._id===id)
     if(!data){
@@ -140,7 +161,7 @@ function App() {
   }
 
   return (
-   <AppContext.Provider value={{favorites, items,cartItems, isItemAdded, setCartOpened, setCartItems,isAuth,setIsAuth,addToCart, isLoading}}>
+   <AppContext.Provider value={{favorites, items,cartItems, idProduct,setIdProduct,isAdmin, setIsAdmin,isItemAdded, setCartOpened, setCartItems,isAuth,setIsAuth,addToCart, isLoading}}>
      <div className={style.wrapper}>
       {
         <Drawer
@@ -152,8 +173,10 @@ function App() {
             setCartOpened(false);
             
           }}
+          setCartOpened={setCartOpened}
         />
       }
+     
       <Header
         onClickCart={() => {
           setCartOpened(true);
@@ -170,25 +193,28 @@ function App() {
         addToCart = {addToCart}
         cartItems = {cartItems}
         isLoading = {isLoading}
-       
+        onRemoveProduct = {onRemoveProduct}
         />}
         />
         
         
         <Route  path="/favorites" element={
-          isAuth ? <Favorites onAddToFavorite={onAddToFavorite}/>: <Login/>}
+          isAuth&&!isAdmin ? <Favorites onAddToFavorite={onAddToFavorite}/>: <Login/>}
+        />
+        <Route  path="/newGame" element={
+          isAdmin ? <NewGame/> : <Login/>}
         />
         <Route  path="/login" element={
-          !isAuth ? <Login/>: <Orders/>}
-        />
-        <Route  path="/login" element={
-          !isAuth ? <Login/>: <Orders/>}
+          !isAuth&&!isAdmin ? <Login/>: <Orders/>}
         />
         <Route  path="/register" element={
-          !isAuth ? <Registration/>: <Orders/>}
+          !isAuth&&!isAdmin ? <Registration/>: <Orders/>}
         />
          <Route  path="/orders" element={
-          isAuth ? <Orders/>:<Login/>}
+          isAuth&&!isAdmin ? <Orders/>:<Login/>}
+        />
+        <Route  path="/gameEdit" element={
+          isAdmin ?  <EditingGame></EditingGame>:''}
         />
       </Routes>
     </div>

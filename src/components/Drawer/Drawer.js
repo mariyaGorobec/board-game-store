@@ -6,11 +6,13 @@ import axios  from "axios";
 import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
 import { useCart } from "../hooks/useCart";
 
-function Drawer({ onClose, onRemove, items = [], opened }) {
+import { useNavigate } from 'react-router-dom';
+function Drawer({ onClose, onRemove, items = [], setCartOpened,opened }) {
   const {setCartItems,totalPrice} = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
   const [localityShipping, setLocalityShipping] = React.useState();
+  const navigate = useNavigate();
 
   React.useEffect(()=>{
   
@@ -53,7 +55,9 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
         'authorization': `Bearer ${token}`
       }}).then(res=>{
         setCartItems([]);
-        setTimeout(()=>window.location.reload(),2000);
+        setTimeout(()=>setCartOpened(false),4000);
+        navigate("/orders");
+        window.location.reload();
       });
   }
     //setOrderID(data.id);
@@ -151,7 +155,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b> <DivideNumberIntoСategory num={totalPrice}></DivideNumberIntoСategory> руб.</b>
+                  <b> <DivideNumberIntoСategory num={totalPrice+delivery-discount}></DivideNumberIntoСategory> руб.</b>
                 </li>
               </ul>
               <button onClick={onClickOrder} className={styles.orangeButton}>

@@ -10,7 +10,7 @@ import AppContext from "../context";
 
 
 function Login() {
- const {isAuth,setIsAuth} = React.useContext(AppContext);
+ const {setIsAdmin,setIsAuth} = React.useContext(AppContext);
 
   const [email,setEmail] = React.useState(``);
   const [password,setPassword] = React.useState(``);
@@ -26,10 +26,16 @@ function Login() {
       const userInfo = resp.data;
       localStorage.setItem('token', `${userInfo.token}`);
       if (userInfo){
+        if(userInfo.user.role){
+          setIsAdmin(true);
+        }
+        else{
         setIsAuth(true);
+        }
         navigate("/");
         window.location.reload();
       }
+    
     });
   }
 
