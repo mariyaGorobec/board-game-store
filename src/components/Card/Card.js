@@ -81,7 +81,7 @@ function Card({
           <div className={styles.cardBottom}>
             <div className={styles.price}>
               <span> Цена:</span>
-              <b>{price} руб.</b>
+              <b><DivideNumberIntoСategory num={price}></DivideNumberIntoСategory> руб.</b>
             </div>
             {isAuth?(onPlus && <img
               alt="Кнопка добавить или кнопка добавленно"

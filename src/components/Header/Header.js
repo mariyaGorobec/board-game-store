@@ -55,7 +55,7 @@ function Header(props) {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>{totalPrice}руб.</span>
+            <span><DivideNumberIntoСategory num ={totalPrice}></DivideNumberIntoСategory> руб.</span>
           </li>
           <li>
             <Link to="/favorites">

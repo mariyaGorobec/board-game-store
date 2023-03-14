@@ -1,10 +1,11 @@
 import styles from "./Registration.module.scss";
 
 
-import React, {useState} from 'react';
+import React from 'react';
 
 import {Link} from 'react-router-dom'; 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Registration() {
 
@@ -16,10 +17,11 @@ function Registration() {
   const [addressShipping,setAddressShipping] = React.useState(``);
   const [postcode,setPostcode] = React.useState(``);
   const [password,setPassword] = React.useState(``);
+  const navigate = useNavigate();
 
   const onSubmit = (event)=>{
     event.preventDefault();
-    axios.post('http://localhost:4444/auth/register',{
+    axios.post('http://localhost:5555/auth/register',{
       name: name,
       lastName: lastName,
       patronymic: patronymic,
@@ -30,6 +32,7 @@ function Registration() {
       postcode:postcode
     }).then(res=>{
       alert('Register')
+      navigate("/login");
     })
   }
   
@@ -44,7 +47,7 @@ function Registration() {
           placeholder="Фамилия"
           required=""
           onChange={(event)=>{
-            setName(event.target.value)
+            setlastName(event.target.value)
           }}
         />
         <input
@@ -54,7 +57,7 @@ function Registration() {
           placeholder="Имя"
           required=""
           onChange={(event)=>{
-            setlastName(event.target.value)
+            setName(event.target.value)
           }}
         />
         <input

@@ -10,11 +10,28 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
   const {setCartItems,totalPrice} = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
- 
+  const [localityShipping, setLocalityShipping] = React.useState();
+
+  React.useEffect(()=>{
+  
+    async function fetchData(){
+      
+      const token = window.localStorage.getItem('token');
+      if (token && token !== null){
+        await axios('http://localhost:5555/auth/me',{
+        headers: {
+          'authorization': `Bearer ${token}`
+        },
+      }).then(res=>setLocalityShipping(res.data.localityShipping));
+    }
+    }
+    fetchData();
+  },[]);
+
   
  
   let delivery = 0;
-  totalPrice<5000?delivery+=250:delivery=0;
+  localityShipping!=='Иркутск'?delivery+=250:delivery=0;
 
   let discount = 0;
   totalPrice<10000?discount=0:discount=totalPrice*0.02;
@@ -92,7 +109,7 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
                   ></img>
                   <div>
                     <p>{obj.title}</p>
-                    <b>{obj.price}руб.</b>
+                    <b><DivideNumberIntoСategory num = {obj.price}></DivideNumberIntoСategory> руб.</b>
                   </div>
                   <svg
                     onClick={() => onRemove(obj._id)}
@@ -122,19 +139,19 @@ function Drawer({ onClose, onRemove, items = [], opened }) {
             <div className={styles.cartTotalBlock}>
               <ul>
                 <li>
-                  <span>Доставка по городу: </span>
+                  <span>Доставка (бесплатно по г. Иркутску): </span>
                   <div></div>
-                  <b>{delivery}руб.</b>
+                  <b><DivideNumberIntoСategory num={delivery}></DivideNumberIntoСategory> руб.</b>
                 </li>
                 <li>
-                  <span>Скидка 2%: </span>
+                  <span>Скидка 2% (при заказе от 10 000 руб.): </span>
                   <div></div>
-                  <b>{discount} руб.</b>
+                  <b><DivideNumberIntoСategory num = {discount}></DivideNumberIntoСategory> руб.</b>
                 </li>
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b> {totalPrice}  руб.</b>
+                  <b> <DivideNumberIntoСategory num={totalPrice}></DivideNumberIntoСategory> руб.</b>
                 </li>
               </ul>
               <button onClick={onClickOrder} className={styles.orangeButton}>
