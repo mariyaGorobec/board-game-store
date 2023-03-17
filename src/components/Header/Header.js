@@ -5,11 +5,13 @@ import React from "react";
 import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
 import { useCart } from "../hooks/useCart";
 import AppContext from "../../context";
+import { useNavigate } from 'react-router-dom';
 
 
 function Header(props) {
   const {totalPrice} = useCart();
-
+  const navigate = useNavigate();
+  
   const {isAuth,isAdmin} = React.useContext(AppContext);
   return (
     <header>
@@ -24,6 +26,24 @@ function Header(props) {
       </Link>
       <div className={styles.headerRight}>
         <ul>
+          {isAdmin?(<li>
+
+<Link to="/orders"><svg fill="#f47c77" height={40} width={40} version="1.1" 
+	 viewBox="0 0 294.842 294.842" >
+<g>
+	<path d="M292.128,214.846c-2.342-2.344-6.143-2.344-8.484,0l-59.512,59.511V6c0-3.313-2.687-6-6-6s-6,2.687-6,6v268.356
+		l-59.513-59.512c-2.342-2.342-6.142-2.343-8.485,0.001c-2.343,2.343-2.343,6.142,0.001,8.485l69.755,69.754
+		c1.171,1.171,2.707,1.757,4.242,1.757s3.071-0.586,4.242-1.758l69.754-69.754C294.472,220.987,294.472,217.188,292.128,214.846z"/>
+	<path d="M6.956,12h180.137c3.313,0,6-2.687,6-6s-2.687-6-6-6H6.956c-3.313,0-6,2.687-6,6S3.643,12,6.956,12z"/>
+	<path d="M6.956,82.228h180.137c3.313,0,6-2.687,6-6s-2.687-6-6-6H6.956c-3.313,0-6,2.687-6,6S3.643,82.228,6.956,82.228z"/>
+	<path d="M6.956,152.456h180.137c3.313,0,6-2.687,6-6s-2.687-6-6-6H6.956c-3.313,0-6,2.687-6,6S3.643,152.456,6.956,152.456z"/>
+	<path d="M124.438,210.685H6.956c-3.313,0-6,2.687-6,6s2.687,6,6,6h117.482c3.313,0,6-2.687,6-6S127.752,210.685,124.438,210.685z"
+		/>
+	<path d="M124.438,280.912H6.956c-3.313,0-6,2.687-6,6s2.687,6,6,6h117.482c3.313,0,6-2.687,6-6S127.752,280.912,124.438,280.912z"
+		/>
+</g>
+</svg></Link>
+          </li>):''}
          {isAuth&&!isAdmin?(<><li>
             <svg
               onClick={props.onClickCart}
@@ -133,6 +153,7 @@ function Header(props) {
           {
             isAdmin?<button className={styles.orangeButton} onClick={()=>{
               localStorage.clear();
+              navigate("/login");
               window.location.reload();
              }}>Выйти</button>:''
           }

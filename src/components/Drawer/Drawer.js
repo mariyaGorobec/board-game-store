@@ -55,7 +55,7 @@ function Drawer({ onClose, onRemove, items = [], setCartOpened,opened }) {
         'authorization': `Bearer ${token}`
       }}).then(res=>{
         setCartItems([]);
-        setTimeout(()=>setCartOpened(false),4000);
+        setTimeout(()=>setCartOpened(false),1000000);
         navigate("/orders");
         window.location.reload();
       });

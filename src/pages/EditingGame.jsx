@@ -16,7 +16,26 @@ function EditingGame(){
 
     const {idProduct} = React.useContext(AppContext);
     const navigate = useNavigate();
-
+    React.useEffect(()=>{
+  
+      async function fetchData(){
+        const token = window.localStorage.getItem('token');
+        if (token && token !== null){
+          await axios(`http://localhost:5555/gameOne?id=${idProduct}`,{
+          headers: {
+            'authorization': `Bearer ${token}`
+          },
+        }).then(res=>{
+          setTitle(res.data.title);
+          setDescription(res.data.description);
+          setPrice(res.data.price);
+          setImgURL(res.data.imgURL);
+        });
+         
+        }
+      }
+      fetchData();
+    },[]);
     
     const onEdit = async(event)=>{
         event.preventDefault();
@@ -60,6 +79,7 @@ function EditingGame(){
         name="title"
         placeholder="Название"
         required=""
+        value={title}
         onChange={(event)=>{
             setTitle(event.target.value)
         }}
@@ -70,6 +90,7 @@ function EditingGame(){
         name="description"
         placeholder="Описание"
         required=""
+        value={description}
         onChange={(event)=>{
             setDescription(event.target.value);
         }}
@@ -79,6 +100,7 @@ function EditingGame(){
         type="text"
         name="price"
         placeholder="Цена"
+        value={price}
         required=""
         onChange={(event)=>{
             setPrice(event.target.value);
@@ -90,6 +112,7 @@ function EditingGame(){
         name="imgURL"
         placeholder="Ссылка на картинку товара"
         required=""
+        value={imgURL}
         onChange={(event)=>{
             setImgURL(event.target.value);
         }}

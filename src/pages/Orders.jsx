@@ -8,22 +8,28 @@ import AppContext from '../context';
 
 import { useNavigate } from 'react-router-dom';
 
-
-
 function Orders(){
     const [isLoading, setIsLoading] = React.useState(true);
     const [orders, setOrders] = React.useState([]);
    const [orderId, setOrderId] = React.useState([]); 
     const [totalPrice, setTotalPrice] = React.useState([]); 
     const [date, setDate] = React.useState([]); 
-    const {setIsAuth} = React.useContext(AppContext);
+    const {setIsAuth, isAdmin} = React.useContext(AppContext);
     const [name,setName] = React.useState('');
-   // const navigate = React.useNavigate();
+    const [allOrders, setAllOrders] = React.useState([]);
+    const navigate = useNavigate();
     
   React.useEffect(() =>{
     (async () => {
       const token = window.localStorage.getItem('token');
       if (token){
+        if(isAdmin){
+          await axios.get('http://localhost:5555/allOrders',{
+            headers: {
+              'authorization': `Bearer ${token}`
+            }}).then(res=>setAllOrders(res.data));
+        }
+        else{
 
       await axios.get('http://localhost:5555/auth/me',{
         headers: {
@@ -44,6 +50,7 @@ function Orders(){
       /*setTotalPrice(resp.data.map(obj=>obj.totalPrice));
         setOrderId(resp.data.map(obj => obj._id));
         ;*/
+        }
       
     }
     
@@ -53,7 +60,26 @@ function Orders(){
   },[])
   
  return (
-    <div className={style.content}>
+    <>{
+      isAdmin ? (
+        <div className={style.content}>
+        <div>
+             <h2>Вcе заказы</h2>
+        </div>
+    <div className={`${styles.orders} ${isLoading ? '' : styles.ordersColumn}`}>
+  {isLoading ? [...new Array(10)].map(()=><Skeleton/>) : (allOrders.length > 0 ? (
+     
+     allOrders.map((item,index) =><Order item = {item}  orderId = {0} date = {0} totalPrice = {0}></Order>)
+    ): <div className= {styles.emptyOrder}>
+    <img src = "/img/purchase-order-4.png" width={130} height={130}></img>
+    <h3>Здесь могли бы быть заказы ваших покупателей:С</h3>
+    <p>Пожалуйста, дождитесь, пока хотя бы один пользователь соврешит заказ.</p>
+  </div> )}
+  {/*isLoading ? [...new Array(10)].map(()=><Skeleton/>) : (
+    orders.map((item,index) =><Order item = {item} orderId = {orderId[index]} totalPrice = {totalPrice[index]} ></Order>))*/}
+    </div>
+  </div>
+      ):(<div className={style.content}>
         <div>
              <div className={styles.topAndButton}>
              <div className={styles.top}>
@@ -64,6 +90,7 @@ function Orders(){
              <button className={styles.orangeButton} onClick={()=>{
               localStorage.clear();
               setIsAuth(false);
+              navigate("/login");
               window.location.reload();
              }}>Выйти</button>
              </div>
@@ -81,7 +108,9 @@ function Orders(){
   {/*isLoading ? [...new Array(10)].map(()=><Skeleton/>) : (
     orders.map((item,index) =><Order item = {item} orderId = {orderId[index]} totalPrice = {totalPrice[index]} ></Order>))*/}
     </div>
-  </div>
+  </div>)
+    }
+    </>
  );   
 }
 export default Orders;

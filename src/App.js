@@ -15,6 +15,7 @@ import NewGame from "./pages/NewGame";
 import EditingGame from "./pages/EditingGame";
 
 
+
 function App() {
   const [items, setItems] = React.useState([]);
   const [cartOpened, setCartOpened] = React.useState(false);
@@ -112,7 +113,9 @@ function App() {
 
   }
   const onRemoveProduct = (id) => {
-    const token = window.localStorage.getItem('token');
+    let isDelete = window.confirm("Вы действительно хотите удалить игру?");
+    if(isDelete){
+      const token = window.localStorage.getItem('token');
     if (token){
       axios(`http://localhost:5555/game?productId=${id}`,{
       headers: {
@@ -120,6 +123,7 @@ function App() {
       },
     }).then(res=>setItems((prev)=> prev.filter(item => item._id !== id)));
   }
+    }
 
   }
 
@@ -161,6 +165,7 @@ function App() {
   }
 
   return (
+    
    <AppContext.Provider value={{favorites, items,cartItems, idProduct,setIdProduct,isAdmin, setIsAdmin,isItemAdded, setCartOpened, setCartItems,isAuth,setIsAuth,addToCart, isLoading}}>
      <div className={style.wrapper}>
       {
@@ -202,20 +207,21 @@ function App() {
           isAuth&&!isAdmin ? <Favorites onAddToFavorite={onAddToFavorite}/>: <Login/>}
         />
         <Route  path="/newGame" element={
-          isAdmin ? <NewGame/> : <Login/>}
+          isAdmin ? <NewGame/> : ''}
         />
         <Route  path="/login" element={
-          !isAuth&&!isAdmin ? <Login/>: <Orders/>}
+          !isAuth&&!isAdmin ? <Login/>:''}
         />
         <Route  path="/register" element={
-          !isAuth&&!isAdmin ? <Registration/>: <Orders/>}
+          !isAuth&&!isAdmin ? <Registration/>: ''}
         />
          <Route  path="/orders" element={
-          isAuth&&!isAdmin ? <Orders/>:<Login/>}
+          isAuth||isAdmin ? <Orders/>:''}
         />
         <Route  path="/gameEdit" element={
           isAdmin ?  <EditingGame></EditingGame>:''}
         />
+        
       </Routes>
     </div>
    </AppContext.Provider>

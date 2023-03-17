@@ -18,6 +18,7 @@ function Card({
   description,
   onPlus,
   favorited = false,
+  isOrder,
   added = false
 }) {
   const navigate = useNavigate();
@@ -135,7 +136,7 @@ function Card({
               width="15"
               height="15"
               src={isItemAdded(_id) ? "/img/btn-checked.svg" : "/img/plus.svg"}
-            ></img>):(isAdmin?(<svg className={styles.onRemove}
+            ></img>):(isAdmin&&!isOrder?(<svg className={styles.onRemove}
               onClick={()=>{
                 onRemoveProduct(_id);
               }}

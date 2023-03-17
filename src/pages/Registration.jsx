@@ -16,24 +16,32 @@ function Registration() {
   const [localityShipping,setLocalityShipping] = React.useState(``);
   const [addressShipping,setAddressShipping] = React.useState(``);
   const [postcode,setPostcode] = React.useState(``);
-  const [password,setPassword] = React.useState(``);
+  const [password1,setPassword1] = React.useState(``);
+  const [password2,setPassword2] = React.useState(``);
   const navigate = useNavigate();
 
   const onSubmit = (event)=>{
     event.preventDefault();
+    if(password1!==password2){
+      setPassword1('');
+      setPassword2('');
+      alert("Пароли не совпадают!")
+    }
+   else{
     axios.post('http://localhost:5555/auth/register',{
       name: name,
       lastName: lastName,
       patronymic: patronymic,
       email: email,
-      password: password,
+      password: password1,
       localityShipping: localityShipping,
       addressShipping: addressShipping,
       postcode:postcode
     }).then(res=>{
-      alert('Register')
+      alert('Вы успешно зарегистрировались!')
       navigate("/login");
-    })
+    }).catch(error=>alert(error.response.data.message))
+   }
   }
   
   return (
@@ -46,6 +54,7 @@ function Registration() {
           name="lastName"
           placeholder="Фамилия"
           required=""
+          value={lastName}
           onChange={(event)=>{
             setlastName(event.target.value)
           }}
@@ -56,6 +65,7 @@ function Registration() {
           name="name"
           placeholder="Имя"
           required=""
+          value={name}
           onChange={(event)=>{
             setName(event.target.value)
           }}
@@ -65,6 +75,7 @@ function Registration() {
           type="text"
           name="patronymic"
           placeholder="Отчество (при наличии)"
+          value={patronymic}
           onChange={(event)=>{
             setPatronymic(event.target.value)
           }}
@@ -75,6 +86,7 @@ function Registration() {
           name="email"
           placeholder="Email"
           required=""
+          value={email}
           onChange={(event)=>{
             setEmail(event.target.value)
           }}
@@ -85,6 +97,7 @@ function Registration() {
           name="localityShipping"
           placeholder="Город"
           required=""
+          value={localityShipping}
           onChange={(event)=>{
             setLocalityShipping(event.target.value)
           }}
@@ -95,6 +108,7 @@ function Registration() {
           name="addressShipping"
           placeholder="Адрес"
           required=""
+          value={addressShipping}
           onChange={(event)=>{
             setAddressShipping(event.target.value)
           }}
@@ -105,18 +119,31 @@ function Registration() {
           name="postcode"
           placeholder="Почтовый индекс"
           required=""
+          value={postcode}
           onChange={(event)=>{
             setPostcode(event.target.value)
           }}
         />
         <input
           class="text"
-          type="text"
+          type="password"
           name="password"
-          placeholder="Пароль"
+          placeholder="Введите пароль"
           required=""
+          value={password1}
           onChange={(event)=>{
-            setPassword(event.target.value)
+            setPassword1(event.target.value)
+          }}
+        />
+        <input
+          class="text"
+          type="password"
+          name="password"
+          placeholder="Повторите пароль"
+          required=""
+          value={password2}
+          onChange={(event)=>{
+            setPassword2(event.target.value)
           }}
         />
  <div className={styles.buttons}>

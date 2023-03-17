@@ -36,7 +36,7 @@ function Login() {
         window.location.reload();
       }
     
-    });
+    }).catch(error=>alert(error.response.data.message));
   }
 
   return (
@@ -55,7 +55,7 @@ function Login() {
         />
         <input
           class="text"
-          type="text"
+          type="password"
           name="Password"
           placeholder="Пароль"
           required=""
