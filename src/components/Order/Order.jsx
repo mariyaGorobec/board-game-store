@@ -30,6 +30,9 @@ const Order = ({ date, item, totalPrice, orderId }) => {
           Общая стоимость заказа:{" "}
           <DivideNumberIntoСategory num={item.totalPrice}></DivideNumberIntoСategory> {" "}руб.
         </span>
+        <span>
+          Дата заказа:{" "}{dateOrder}
+        </span>
       </div>
       <div className={styles.order}>
         {item.products.map((obj) => (
