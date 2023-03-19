@@ -26,6 +26,10 @@ function App() {
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [isAuth,setIsAuth] = React.useState(false);
   const [idProduct,setIdProduct] = React.useState();
+  const [itemsQty,setItemsQty] = React.useState();
+  const [page,setPage] = React.useState();
+  const [firstNumber,setFirstNumber] = React.useState(0);
+  const [lastNumber,setLastNumber] = React.useState(9);
 
   React.useEffect(()=>{
   
@@ -58,7 +62,10 @@ function App() {
         
       }
    
-    await axios.get('http://localhost:5555/games').then(res=>setItems(res.data));
+    await axios.get('http://localhost:5555/games').then(res=>{
+      setItems(res.data);
+      setPage(res.data.slice(firstNumber,lastNumber));
+    });
       
       setIsLoading(false);
 
@@ -201,8 +208,7 @@ function App() {
         onRemoveProduct = {onRemoveProduct}
         />}
         />
-        
-        
+
         <Route  path="/favorites" element={
           isAuth&&!isAdmin ? <Favorites onAddToFavorite={onAddToFavorite}/>: <Login/>}
         />

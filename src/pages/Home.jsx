@@ -1,10 +1,18 @@
 import Card from "../components/Card/Card";
 import Skeleton from "../components/Skeleton";
 import style from '../index.module.scss'
+import * as React from 'react';
+
+
+
+
+
 
 
 function Home({items, onRemoveProduct, isLoading, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
-    return(
+
+  
+  return(
         <div className={style.content}>
         <div className={style.titleAndSearch}>
           <div className={style.headline}>
@@ -81,6 +89,7 @@ function Home({items, onRemoveProduct, isLoading, searchValue, setSearchValue, o
           ))}
          
         </div>
+        
       </div>
     );
 }
