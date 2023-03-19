@@ -48,6 +48,7 @@ body {
       }
       
     }
+    
     margin-bottom: 40px;
     display: flex;
     align-items: center;
@@ -111,4 +112,8 @@ body {
   &:active{
     background-color: darken($color: #f47c77, $amount: 20%);
   }
+}
+.pagination{
+  display: flex;
+  justify-content: center;
 }

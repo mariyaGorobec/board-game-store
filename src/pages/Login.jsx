@@ -36,7 +36,14 @@ function Login() {
         window.location.reload();
       }
     
-    }).catch(error=>alert(error.response.data.message));
+    }).catch(error=>{
+      if(error.response.data.message){
+        alert(error.response.data.message)
+      }
+      else{
+        error.response.data.map(item=>alert(item.msg))
+      }
+    });
   }
 
   return (

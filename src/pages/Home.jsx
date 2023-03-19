@@ -2,16 +2,16 @@ import Card from "../components/Card/Card";
 import Skeleton from "../components/Skeleton";
 import style from '../index.module.scss'
 import * as React from 'react';
+import { createTheme } from '@mui/material/styles';
+import { purple } from '@mui/material/colors';
+import Pagination from '@mui/material/Pagination';
+import { red } from '@mui/material/colors';
 
 
+function Home({items,pageQty,handleChange, setPage,key,val, page,onRemoveProduct, isLoading, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
 
+const [currentPage,setcurrentPage] = React.useState(page);
 
-
-
-
-function Home({items, onRemoveProduct, isLoading, searchValue, setSearchValue, onChangeSearchInput,onAddToFavorite,addToCart, cartItems, favorites}) {
-
-  
   return(
         <div className={style.content}>
         <div className={style.titleAndSearch}>
@@ -20,6 +20,7 @@ function Home({items, onRemoveProduct, isLoading, searchValue, setSearchValue, o
           </h1>
           <span>{searchValue ?  searchValue : ""}</span>
           </div>
+        {console.log()}
           <div className={style.searchBlock}>
           {searchValue&&<svg
               onClick = {()=> setSearchValue('')}
@@ -62,9 +63,8 @@ function Home({items, onRemoveProduct, isLoading, searchValue, setSearchValue, o
           </div>
         </div>
         <div className={style.cards}>
-          
           {isLoading ? [...new Array(10)].map(()=><Skeleton/>):
-            items.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
+            page.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item,index) => (
             <Card
               key = {item.id}
               _id={item._id}
@@ -88,6 +88,9 @@ function Home({items, onRemoveProduct, isLoading, searchValue, setSearchValue, o
             ></Card>
           ))}
          
+        </div>
+        <div className={style.pagination}> 
+        <Pagination count={pageQty}  onChange={handleChange}/> 
         </div>
         
       </div>

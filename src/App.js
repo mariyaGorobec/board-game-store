@@ -26,10 +26,12 @@ function App() {
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [isAuth,setIsAuth] = React.useState(false);
   const [idProduct,setIdProduct] = React.useState();
-  const [itemsQty,setItemsQty] = React.useState();
+  const [pageQty,setPageQty] = React.useState();
   const [page,setPage] = React.useState();
   const [firstNumber,setFirstNumber] = React.useState(0);
   const [lastNumber,setLastNumber] = React.useState(9);
+  const [val,setVal] = React.useState(1);
+  const proverka = [];
 
   React.useEffect(()=>{
   
@@ -64,9 +66,10 @@ function App() {
    
     await axios.get('http://localhost:5555/games').then(res=>{
       setItems(res.data);
-      setPage(res.data.slice(firstNumber,lastNumber));
-    });
-      
+      setPage(res.data.slice(0,9));
+      setPageQty(Math.ceil(res.data.length/9));
+      res.data.map(item=>proverka.push(item._id));
+    })
       setIsLoading(false);
 
     }
@@ -74,6 +77,11 @@ function App() {
   },[]);
 
 
+
+
+
+
+  
   const addToCart = async (id) =>{
     let info = cartItems.find(item=>item._id===id)
     if(!info){
@@ -134,6 +142,13 @@ function App() {
 
   }
 
+  const handleChange = (event, value)=>{
+    
+    setPage(items.slice(value*9-9,value*9));
+   
+
+  }
+
   const onAddToFavorite = (id) => {
      let data = favorites.find(item=>item._id===id)
     if(!data){
@@ -188,7 +203,7 @@ function App() {
           setCartOpened={setCartOpened}
         />
       }
-     
+    
       <Header
         onClickCart={() => {
           setCartOpened(true);
@@ -206,6 +221,10 @@ function App() {
         cartItems = {cartItems}
         isLoading = {isLoading}
         onRemoveProduct = {onRemoveProduct}
+        pageQty = {pageQty}
+        page = {page}
+        handleChange={handleChange}
+        val={val}
         />}
         />
 

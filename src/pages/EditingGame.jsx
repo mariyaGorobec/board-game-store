@@ -52,7 +52,7 @@ function EditingGame(){
                   navigate("/");
                window.location.reload();
                 alert("Игра изменина!");
-              })
+              }).catch(error=>error.response.data.map(item=>alert(item.msg)));
             }
             else(
               alert("Вы не выбрали игру")

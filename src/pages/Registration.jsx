@@ -40,7 +40,14 @@ function Registration() {
     }).then(res=>{
       alert('Вы успешно зарегистрировались!')
       navigate("/login");
-    }).catch(error=>alert(error.response.data.message))
+    }).catch(error=>{
+      if(error.response.data.message){
+        alert(error.response.data.message)
+      }
+      else{
+        error.response.data.map(item=>alert(item.msg))
+      }
+    })
    }
   }
   

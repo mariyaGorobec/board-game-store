@@ -26,7 +26,7 @@ function NewGame(){
                 }).then(resp => {
                window.location.reload();
                 alert("Игра добавлена!");
-              })
+              }).catch(error=>error.response.data.map(item=>alert(item.msg)));
             }
         
       /*axios.post('http://localhost:5555/games',{
