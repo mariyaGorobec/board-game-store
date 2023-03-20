@@ -1,76 +1,78 @@
-form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    input{
-        padding: 15px;
-        margin-bottom: 15px;
-        width: 400px;
-        font-size: 16px;
-        outline-color: #f47c77;
-        border-radius: 20px;
-        border: 2px solid #f8c145;
-    }
-}
-.content{
-   // background-color: #45f87b;
-   
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    h2{
-        opacity: 90%;
-    }
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  input {
+    padding: 15px;
+    margin-bottom: 15px;
+    width: 400px;
+    font-size: 16px;
+    outline-color: #f47c77;
+    border-radius: 20px;
+    border: 2px solid #f8c145;
+  }
 }
 
-.orangeButton{
-    width: 180px;
-    height: 50px;
-    background: #f47c77;
-    border-radius: 18px;
-    border: 0;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.1s ease-in-out;
-  
-    &:hover{
-      background-color: lighten($color: #f47c77, $amount: 5%);
-    }
-  
-    &:active{
-      background-color: darken($color: #f47c77, $amount: 20%);
-    }
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    opacity: 90%;
   }
-  .yellowButton{
-    width: 180px;
-    height: 50px;
-    background: #f8c145;
-    border-radius: 18px;
-    border: 0;
-    color: #fff;
-    font-size: 16px;
- 
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.1s ease-in-out;
-  
-    &:hover{
-      background-color: lighten($color: #f8c145, $amount: 5%);
-    }
-  
-    &:active{
-      background-color: darken($color: #f8c145, $amount: 20%);
-    }
+}
+
+.orangeButton {
+  width: 180px;
+  height: 50px;
+  background: #f47c77;
+  border-radius: 18px;
+  border: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.1s ease-in-out;
+
+  &:hover {
+    background-color: lighten($color: #f47c77, $amount: 5%);
   }
 
-  .buttons{
-    width: 430px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-    justify-content: space-between;
+  &:active {
+    background-color: darken($color: #f47c77, $amount: 20%);
+  }
+}
+
+.yellowButton {
+  width: 180px;
+  height: 50px;
+  background: #f8c145;
+  border-radius: 18px;
+  border: 0;
+  color: #fff;
+  font-size: 16px;
+
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.1s ease-in-out;
+
+  &:hover {
+    background-color: lighten($color: #f8c145, $amount: 5%);
+  }
+
+  &:active {
+    background-color: darken($color: #f8c145, $amount: 20%);
+  }
+}
+
+.buttons {
+  width: 430px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  justify-content: space-between;
 
 }

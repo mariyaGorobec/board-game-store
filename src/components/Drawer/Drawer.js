@@ -2,76 +2,77 @@ import styles from "./Drawer.module.scss";
 import Info from "../Info.jsx";
 import React from "react";
 
-import axios  from "axios";
+import axios from "axios";
 import DivideNumberIntoСategory from "../DivideNumberIntoСategory";
 import { useCart } from "../hooks/useCart";
 
-import { useNavigate } from 'react-router-dom';
-function Drawer({ onClose, onRemove, items = [], setCartOpened,opened }) {
-  const {setCartItems,totalPrice} = useCart();
+import { useNavigate } from "react-router-dom";
+function Drawer({ onClose, onRemove, items = [], setCartOpened, opened }) {
+  const { setCartItems, totalPrice } = useCart();
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [orderId, setOrderId] = React.useState(null);
   const [localityShipping, setLocalityShipping] = React.useState();
   const navigate = useNavigate();
 
-  React.useEffect(()=>{
-  
-    async function fetchData(){
-      
-      const token = window.localStorage.getItem('token');
-      if (token && token !== null){
-        await axios('http://localhost:5555/auth/me',{
-        headers: {
-          'authorization': `Bearer ${token}`
-        },
-      }).then(res=>setLocalityShipping(res.data.localityShipping));
-    }
+  React.useEffect(() => {
+    async function fetchData() {
+      const token = window.localStorage.getItem("token");
+      if (token && token !== null) {
+        await axios("http://localhost:5555/auth/me", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }).then((res) => setLocalityShipping(res.data.localityShipping));
+      }
     }
     fetchData();
-  },[]);
+  }, []);
 
-  
- 
   let delivery = 0;
-  localityShipping!=='Иркутск'?delivery+=250:delivery=0;
+  localityShipping !== "Иркутск" ? (delivery += 250) : (delivery = 0);
 
   let discount = 0;
-  totalPrice<10000?discount=0:discount=totalPrice*0.02;
-  
-  const onClickOrder= async()=>{
-   try {
-    const total = Math.round(totalPrice+delivery-discount);
-    const token = window.localStorage.getItem('token');
-    if (token){
-      await axios.get(`http://localhost:5555/makeAnOrder?totalPrice=${total}`,{
-      headers: {
-        'authorization': `Bearer ${token}`
+  totalPrice < 10000 ? (discount = 0) : (discount = totalPrice * 0.02);
+
+  const onClickOrder = async () => {
+    try {
+      const total = Math.round(totalPrice + delivery - discount);
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        await axios
+          .get(`http://localhost:5555/makeAnOrder?totalPrice=${total}`, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          })
+          .then((resp) => setOrderId(resp.data));
+        setIsOrderComplete(true);
+        await axios
+          .get("http://localhost:5555/deleteCart", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            setCartItems([]);
+            setTimeout(() => setCartOpened(false), 1000000);
+            navigate("/orders");
+            window.location.reload();
+          });
       }
-      
-    }).then(resp=>setOrderId(resp.data));
-    setIsOrderComplete(true);
-    await axios.get('http://localhost:5555/deleteCart',{
-      headers: {
-        'authorization': `Bearer ${token}`
-      }}).then(res=>{
-        setCartItems([]);
-        setTimeout(()=>setCartOpened(false),1000000);
-        navigate("/orders");
-        window.location.reload();
-      });
-  }
-    //setOrderID(data.id);
-    
-      
-      
-   } catch (error) {
-    alert("Ошибка при создании заказа! :С");
-   }
-  }
+    } catch (error) {
+      alert("Ошибка при создании заказа! :С");
+    }
+  };
 
   return (
-   
-    <div  className={`${styles.overlay} ${opened ? styles.overlayVisible: ''} ${opened ? document.body.style.overflowY = 'hidden': document.body.style.overflowY = 'scroll'}`}>
+    <div
+      className={`${styles.overlay} ${opened ? styles.overlayVisible : ""} ${
+        opened
+          ? (document.body.style.overflowY = "hidden")
+          : (document.body.style.overflowY = "scroll")
+      }`}
+    >
       <div className={styles.drawer}>
         <h2>
           Корзина
@@ -103,7 +104,6 @@ function Drawer({ onClose, onRemove, items = [], setCartOpened,opened }) {
             {" "}
             <div className={styles.items}>
               {items.map((obj) => (
-                
                 <div key={obj} className={styles.cartItem}>
                   <img
                     width={70}
@@ -113,7 +113,12 @@ function Drawer({ onClose, onRemove, items = [], setCartOpened,opened }) {
                   ></img>
                   <div>
                     <p>{obj.title}</p>
-                    <b><DivideNumberIntoСategory num = {obj.price}></DivideNumberIntoСategory> руб.</b>
+                    <b>
+                      <DivideNumberIntoСategory
+                        num={obj.price}
+                      ></DivideNumberIntoСategory>{" "}
+                      руб.
+                    </b>
                   </div>
                   <svg
                     onClick={() => onRemove(obj._id)}
@@ -145,17 +150,33 @@ function Drawer({ onClose, onRemove, items = [], setCartOpened,opened }) {
                 <li>
                   <span>Доставка (бесплатно по г. Иркутску): </span>
                   <div></div>
-                  <b><DivideNumberIntoСategory num={delivery}></DivideNumberIntoСategory> руб.</b>
+                  <b>
+                    <DivideNumberIntoСategory
+                      num={delivery}
+                    ></DivideNumberIntoСategory>{" "}
+                    руб.
+                  </b>
                 </li>
                 <li>
                   <span>Скидка 2% (при заказе от 10 000 руб.): </span>
                   <div></div>
-                  <b><DivideNumberIntoСategory num = {discount}></DivideNumberIntoСategory> руб.</b>
+                  <b>
+                    <DivideNumberIntoСategory
+                      num={discount}
+                    ></DivideNumberIntoСategory>{" "}
+                    руб.
+                  </b>
                 </li>
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b> <DivideNumberIntoСategory num={totalPrice+delivery-discount}></DivideNumberIntoСategory> руб.</b>
+                  <b>
+                    {" "}
+                    <DivideNumberIntoСategory
+                      num={totalPrice + delivery - discount}
+                    ></DivideNumberIntoСategory>{" "}
+                    руб.
+                  </b>
                 </li>
               </ul>
               <button onClick={onClickOrder} className={styles.orangeButton}>
@@ -170,14 +191,25 @@ function Drawer({ onClose, onRemove, items = [], setCartOpened,opened }) {
           </>
         ) : (
           <Info
-            title={isOrderComplete ? "Поздравляю! Заказ оформлен!" :"Корзине грустно, когда в ней пусто :С"}
-            description={isOrderComplete ? `Ваш заказ №${orderId} оформлен и скоро будет передан курьерской службе.` : "Пожалуйста, добавьте хотя бы один товар в корзину, чтобы сделать заказ."}
-            imgURL={isOrderComplete ? "/img/complete-order.jpg" :"/img/empty-cart.jpg"}
+            title={
+              isOrderComplete
+                ? "Поздравляю! Заказ оформлен!"
+                : "Корзине грустно, когда в ней пусто :С"
+            }
+            description={
+              isOrderComplete
+                ? `Ваш заказ №${orderId} оформлен и скоро будет передан курьерской службе.`
+                : "Пожалуйста, добавьте хотя бы один товар в корзину, чтобы сделать заказ."
+            }
+            imgURL={
+              isOrderComplete
+                ? "/img/complete-order.jpg"
+                : "/img/empty-cart.jpg"
+            }
           ></Info>
         )}
       </div>
     </div>
-    
   );
 }
 
